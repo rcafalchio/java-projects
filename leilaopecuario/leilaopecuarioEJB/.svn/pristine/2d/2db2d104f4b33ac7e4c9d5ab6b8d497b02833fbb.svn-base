@@ -1,0 +1,89 @@
+package com.leilaopecuario.vo;
+
+import java.util.Date;
+
+public class UsuarioVO {
+
+	private Integer codigo;
+	private String login;
+	private String nome;
+	private Long numeroCpf;
+	private Date dataNascimento;
+	private EmpresaVO empresa = null;
+	private ContatoVO contato = null;
+	private EnderecoVO endereco = null;
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Long getNumeroCpf() {
+		return numeroCpf;
+	}
+
+	public void setNumeroCpf(Long numeroCpf) {
+		this.numeroCpf = numeroCpf;
+	}
+
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
+
+	public EmpresaVO getEmpresa() {
+		if (empresa == null) {
+			empresa = new EmpresaVO();
+		}
+		return empresa;
+	}
+
+	public void setEmpresa(EmpresaVO empresa) {
+		this.empresa = empresa;
+	}
+
+	public ContatoVO getContato() {
+		if (contato == null) {
+			contato = new ContatoVO();
+		}
+		return contato;
+	}
+
+	public void setContato(ContatoVO contato) {
+		this.contato = contato;
+	}
+
+	public EnderecoVO getEndereco() {
+		if (endereco == null) {
+			endereco = new EnderecoVO();
+		}
+		return endereco;
+	}
+
+	public void setEndereco(EnderecoVO endereco) {
+		this.endereco = endereco;
+	}
+
+}

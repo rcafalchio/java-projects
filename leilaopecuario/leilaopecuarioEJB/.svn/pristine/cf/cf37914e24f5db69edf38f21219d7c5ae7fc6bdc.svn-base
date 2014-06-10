@@ -1,0 +1,155 @@
+package com.leilaopecuario.entidades;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "leilao")
+public class Leilao {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "codigo_leilao")
+	private Integer codigo;
+	private String titulo;
+	private String descricao;
+	private Short formaPagamento;
+	@Temporal(TemporalType.DATE)
+	private Date dataEHoraFinal;
+	@Temporal(TemporalType.DATE)
+	private Date dataEHoraAlteracao;
+	private String caminhoFotos;
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Short getFormaPagamento() {
+		return formaPagamento;
+	}
+
+	public void setFormaPagamento(Short formaPagamento) {
+		this.formaPagamento = formaPagamento;
+	}
+
+	public Date getDataEHoraFinal() {
+		return dataEHoraFinal;
+	}
+
+	public void setDataEHoraFinal(Date dataEHoraFinal) {
+		this.dataEHoraFinal = dataEHoraFinal;
+	}
+
+	public Date getDataEHoraAlteracao() {
+		return dataEHoraAlteracao;
+	}
+
+	public void setDataEHoraAlteracao(Date dataEHoraAlteracao) {
+		this.dataEHoraAlteracao = dataEHoraAlteracao;
+	}
+
+	public String getCaminhoFotos() {
+		return caminhoFotos;
+	}
+
+	public void setCaminhoFotos(String caminhoFotos) {
+		this.caminhoFotos = caminhoFotos;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((caminhoFotos == null) ? 0 : caminhoFotos.hashCode());
+		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		result = prime
+				* result
+				+ ((dataEHoraAlteracao == null) ? 0 : dataEHoraAlteracao
+						.hashCode());
+		result = prime * result
+				+ ((dataEHoraFinal == null) ? 0 : dataEHoraFinal.hashCode());
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result
+				+ ((formaPagamento == null) ? 0 : formaPagamento.hashCode());
+		result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Leilao other = (Leilao) obj;
+		if (caminhoFotos == null) {
+			if (other.caminhoFotos != null)
+				return false;
+		} else if (!caminhoFotos.equals(other.caminhoFotos))
+			return false;
+		if (codigo == null) {
+			if (other.codigo != null)
+				return false;
+		} else if (!codigo.equals(other.codigo))
+			return false;
+		if (dataEHoraAlteracao == null) {
+			if (other.dataEHoraAlteracao != null)
+				return false;
+		} else if (!dataEHoraAlteracao.equals(other.dataEHoraAlteracao))
+			return false;
+		if (dataEHoraFinal == null) {
+			if (other.dataEHoraFinal != null)
+				return false;
+		} else if (!dataEHoraFinal.equals(other.dataEHoraFinal))
+			return false;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (formaPagamento == null) {
+			if (other.formaPagamento != null)
+				return false;
+		} else if (!formaPagamento.equals(other.formaPagamento))
+			return false;
+		if (titulo == null) {
+			if (other.titulo != null)
+				return false;
+		} else if (!titulo.equals(other.titulo))
+			return false;
+		return true;
+	}
+
+}

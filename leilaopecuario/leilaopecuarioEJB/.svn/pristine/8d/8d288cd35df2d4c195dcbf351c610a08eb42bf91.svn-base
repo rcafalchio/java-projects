@@ -1,0 +1,10 @@
+package com.leilaopecuario.negocio;
+
+import javax.ejb.Stateless;
+
+@Stateless
+public class GerenciadorUsuario implements GerenciadorUsuarioLocal{
+
+	
+	
+}

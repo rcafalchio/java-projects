@@ -1,0 +1,280 @@
+package br.com.leilaopecuario.bean;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.FlowEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
+
+import com.leilaopecuario.constantes.ConstantesMensagens;
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.negocio.GerenciadorLeilaoLocal;
+import com.leilaopecuario.vo.CaminhoFotoVO;
+import com.leilaopecuario.vo.LanceVO;
+import com.leilaopecuario.vo.LeilaoVO;
+import com.leilaopecuario.vo.UsuarioVO;
+
+@ManagedBean
+@ApplicationScoped
+public class ControladorLeilaoBean {
+
+	private final static Logger LOGGER = Logger.getLogger(ControladorLeilaoBean.class);
+
+	private List<LeilaoVO> leiloes = null;
+	private LeilaoVO leilaoVO = null;
+	private List<String> listaFotos = null;
+	private LanceVO lanceVO = null;
+	private List<UploadedFile> listaDeFotos = new ArrayList<UploadedFile>();
+
+	@EJB
+	private GerenciadorLeilaoLocal gerenciadorLeilao;
+
+	public void fileUploadAction(FileUploadEvent event) {
+		try {
+			listaDeFotos.add(event.getFile());
+			FacesContext.getCurrentInstance().addMessage("msg_foto",
+					new FacesMessage(FacesMessage.SEVERITY_INFO, ConstantesMensagens.INFO_FOTO_CARREGADA, ""));
+		} catch (Exception ex) {
+			System.out.println("Erro no upload de imagem" + ex);
+		}
+	}
+
+	public StreamedContent carregaFotoCapa(String caminhoFoto) {
+		
+		StreamedContent fotoCapa = null;
+		
+		try {
+			final File arquivoFotoCapa = new File(caminhoFoto);
+			final FileInputStream fileInputStream = new FileInputStream(arquivoFotoCapa);
+			final InputStream is = new BufferedInputStream(fileInputStream);
+			fotoCapa = new DefaultStreamedContent(is);
+		} catch (Exception e) {
+			LOGGER.error("Problema ao recuperar a foto de capa!", e);
+		}
+		
+		return fotoCapa;
+
+	}
+
+	@PostConstruct
+	public String init() {
+
+		String retorno = "";
+
+		try {
+			this.leiloes = gerenciadorLeilao.recuperaLeiloesAtivos();
+			if (leiloes == null || leiloes.isEmpty()) {
+				FacesContext.getCurrentInstance().addMessage("msg_cadastro",
+						new FacesMessage(FacesMessage.SEVERITY_INFO, ConstantesMensagens.INFO_NAO_EXISTEM_LEILOES, ""));
+				retorno = "cadastrado";
+			}
+		} catch (Exception e) {
+			LOGGER.error("Problema ao recuperar os leilões ativos!", e);
+		}
+		return retorno;
+
+	}
+
+	public List<String> carregaListaFotos() {
+		try {
+			if (leilaoVO != null && leilaoVO.getCodigo() != null) {
+				this.listaFotos = gerenciadorLeilao.recuperaFotosLeilao(leilaoVO.getCodigo());
+			}
+		} catch (Exception e) {
+			LOGGER.error("Problema ao carregar a lista de fotos do leilão", e);
+		}
+
+		return listaFotos;
+	}
+
+	public String cadastraLeilao() {
+
+		String retorno = "";
+
+		try {
+
+			HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
+					.getSession(false);
+
+			leilaoVO.setUsuarioVO((UsuarioVO) httpSession.getAttribute("usuario"));
+			leilaoVO.setDataCadastro(new Date());
+
+			FacesContext aFacesContext = FacesContext.getCurrentInstance();
+			ServletContext context = (ServletContext) aFacesContext.getExternalContext().getContext();
+
+			Integer codigoLeilao = gerenciadorLeilao.gravaLeilao(leilaoVO);
+
+			String caminhofotos = recuperaWorkSpace(context.getRealPath("/"));
+			caminhofotos = caminhofotos + "/arquivos_leilao/fotos/" + codigoLeilao + "/";
+
+			// Aqui cria o diretorio caso não exista
+			File file = new File(caminhofotos);
+			file.mkdirs();
+
+			CaminhoFotoVO caminhoFoto = new CaminhoFotoVO();
+			caminhoFoto.setCaminho(caminhofotos);
+			leilaoVO.setCaminhosFotos(caminhoFoto);
+
+			leilaoVO.setCodigo(codigoLeilao);
+			gerenciadorLeilao.atualizarLeilao(leilaoVO);
+
+			// Somente grava as fotos se conseguir atualizar o caminho das fotos
+			for (UploadedFile foto : listaDeFotos) {
+
+				byte[] arquivo = foto.getContents();
+
+				FileOutputStream fos = new FileOutputStream(file + "\\" + foto.getFileName());
+
+				fos.write(arquivo);
+				fos.close();
+
+			}
+
+			FacesContext.getCurrentInstance().addMessage("msg_cadastro",
+					new FacesMessage(FacesMessage.SEVERITY_INFO, ConstantesMensagens.INFO_LEILAO_CADASTRADO, ""));
+
+			retorno = "login";
+		} catch (Exception e) {
+			LOGGER.error("Ocorreu um erro no método cadastraLeilao()", e);
+			FacesContext.getCurrentInstance().addMessage("msg_cadastro",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, ConstantesMensagens.FALHA_GENERICA, null));
+			retorno = "";
+		}
+
+		return retorno;
+	}
+
+	private String recuperaWorkSpace(String caminho) {
+
+		try {
+			final String[] diretorios = caminho.split("\\\\");
+			// caminho = diretorios[0] + "/" + diretorios[1];
+			caminho = diretorios[0];
+		} catch (Exception e) {
+			LOGGER.error("Não conseguiu recuperar o diretório", e);
+		}
+
+		return caminho;
+
+	}
+
+	public String efetuaLance(LeilaoVO leilaoVO) {
+
+		String retorno = "";
+
+		if (leilaoVO != null) {
+			this.leilaoVO = leilaoVO;
+			retorno = "paginalance";
+		}
+
+		return retorno;
+	}
+
+	public String enviarLance() {
+
+		String retorno = "";
+
+		try {
+			HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
+					.getSession(false);
+			lanceVO.setLeilaoVO(leilaoVO);
+			lanceVO.setUsuarioVO((UsuarioVO) httpSession.getAttribute("usuario"));
+			String fraseErro = gerenciadorLeilao.efetuarLance(lanceVO);
+			if (fraseErro != null) {
+				FacesContext.getCurrentInstance().addMessage("msg_cadastro",
+						new FacesMessage(FacesMessage.SEVERITY_WARN, fraseErro, ""));
+			} else {
+				FacesContext.getCurrentInstance().addMessage("msg_cadastro",
+						new FacesMessage(FacesMessage.SEVERITY_INFO, ConstantesMensagens.INFO_LANCE_SUCESSO, ""));
+
+				retorno = "login";
+			}
+
+			this.leiloes = gerenciadorLeilao.recuperaLeiloesAtivos();
+
+		} catch (LeilaoException e) {
+			FacesContext.getCurrentInstance().addMessage("msg_cadastro",
+					new FacesMessage(FacesMessage.SEVERITY_FATAL, ConstantesMensagens.FALHA_GENERICA, ""));
+
+			LOGGER.error("Erro no método enviarLance ", e);
+		}
+
+		return retorno;
+	}
+
+	public LeilaoVO getLeilaoVO() {
+		if (this.leilaoVO == null) {
+			this.leilaoVO = new LeilaoVO();
+		}
+		return leilaoVO;
+	}
+
+	public void setLeilaoVO(LeilaoVO leilaoVO) {
+		this.leilaoVO = leilaoVO;
+	}
+
+	public List<String> getListaFotos() {
+		if (this.listaFotos == null) {
+			this.listaFotos = carregaListaFotos();
+		}
+		return this.listaFotos;
+	}
+
+	public void setListaFotos(List<String> listaFotos) {
+		this.listaFotos = listaFotos;
+	}
+
+	public LanceVO getLanceVO() {
+		if (lanceVO == null) {
+			lanceVO = new LanceVO();
+		}
+		return lanceVO;
+	}
+
+	public void setLanceVO(LanceVO lanceVO) {
+		this.lanceVO = lanceVO;
+	}
+
+	public List<UploadedFile> getListaDeFotos() {
+		return listaDeFotos;
+	}
+
+	public void setListaDeFotos(List<UploadedFile> listaDeFotos) {
+		this.listaDeFotos = listaDeFotos;
+	}
+	
+	public List<LeilaoVO> getLeiloes() {
+		return leiloes;
+	}
+
+	public void setLeiloes(List<LeilaoVO> leiloes) {
+		this.leiloes = leiloes;
+	}
+
+	// public void handleToggle(ToggleEvent event) {
+	//
+	// }
+
+	public String onFlowProcess(FlowEvent event) {
+		return event.getNewStep();
+	}
+}

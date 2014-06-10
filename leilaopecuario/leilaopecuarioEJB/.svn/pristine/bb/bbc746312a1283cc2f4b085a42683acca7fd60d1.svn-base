@@ -1,0 +1,26 @@
+package com.leilaopecuario.persistencia;
+
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import com.leilaopecuario.entidades.Leilao;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@Stateless
+public class ControladorPersistenciaLeilao implements
+		ControladorPersistenciaLeilaoLocal {
+
+	@PersistenceContext(name = "leilao")
+	private EntityManager entityManager;
+
+	@Override
+	public void inserirLeilao(final LeilaoVO leilaoVO) {
+		final Leilao leilao = new Leilao();
+		leilao.setTitulo(leilaoVO.getTitulo());
+		leilao.setDescricao(leilaoVO.getDescricao());
+		leilao.setFormaPagamento(leilaoVO.getFormaPagamento());
+		entityManager.persist(leilao);
+	}
+
+}

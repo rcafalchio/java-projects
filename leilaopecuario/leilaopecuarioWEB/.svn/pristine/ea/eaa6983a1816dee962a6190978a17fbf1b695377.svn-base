@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#paginas#publicas#cadastrousuario.xhtml"
+  PATH="/paginas/publicas/cadastrousuario.xhtml" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#publicas#cadastrousuario.xhtml:0"
+   NAME="item" PATH="/paginas/publicas/cadastrousuario.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="cadastrado::#paginas#publicas#index.xhtml"
+    NAME="output" PATH="/paginas/publicas/index.xhtml"
+    TARGET="rules:#paginas#publicas#index.xhtml" TITLE="cadastrado" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#*" PATH="/*" SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#*:0" NAME="item" PATH="/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="login::#paginas#publicas#index.xhtml"
+    NAME="output" PATH="/paginas/publicas/index.xhtml"
+    TARGET="rules:#paginas#publicas#index.xhtml" TITLE="login" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#publicas#index.xhtml"
+  PATH="/paginas/publicas/index.xhtml" SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#*:1" PATH="/*" SHAPE="32,241,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#*:1" NAME="item" PATH="/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="paginalance::#paginas#publicas#efetuarlance.xhtml" NAME="output"
+    PATH="/paginas/publicas/efetuarlance.xhtml"
+    TARGET="rules:#paginas#publicas#efetuarlance.xhtml"
+    TITLE="paginalance" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#publicas#efetuarlance.xhtml"
+  PATH="/paginas/publicas/efetuarlance.xhtml" SHAPE="240,257,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/layout/layout.xhtml">
+
+	<ui:define name="conteudo">
+
+	<div align="center">
+		<form method="post" action="j_security_check">
+
+			<p:panel>
+				<p:panelGrid id="grid" columns="2" style="margin-bottom:10px">
+					<f:facet name="header">
+					Efetuar Login
+				</f:facet>
+					<h:outputLabel for="j_username" value="Login" />
+					<input type="text" id="j_username" name="j_username" />
+
+					<h:outputLabel for="j_password" value="Senha" />
+					<input type="password" id="j_password" name="j_password" />
+
+					<f:facet name="footer">
+						<center>
+							<input type="submit" name="submit" value="Login" />
+						</center>
+					</f:facet>
+				</p:panelGrid>
+			</p:panel>
+		</form>
+	</div>
+
+	</ui:define>
+</ui:composition>
+</html>

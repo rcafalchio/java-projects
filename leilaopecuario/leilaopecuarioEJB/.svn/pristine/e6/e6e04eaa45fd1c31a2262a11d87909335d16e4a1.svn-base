@@ -1,0 +1,12 @@
+package com.leilaopecuario.negocio;
+
+import javax.ejb.Local;
+
+import com.leilaopecuario.vo.UsuarioVO;
+
+@Local
+public interface GerenciadorUsuarioLocal {
+
+	public void gravaUsuario(UsuarioVO usuarioVO);
+
+}

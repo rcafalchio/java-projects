@@ -1,0 +1,86 @@
+package com.leilaopecuario.entidades;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+@Entity
+@Table(name = "cadastro_empresa")
+public class Empresa {
+
+	@Id
+	@Column(name = "codigo_usuario")
+	@GeneratedValue(generator = "foreign")
+	@GenericGenerator(name = "foreign", strategy = "foreign", parameters = { @Parameter(name = "property", value = "usuario") })
+	private Integer codigoUsuario;
+
+	@PrimaryKeyJoinColumn
+	@OneToOne(mappedBy = "empresa")
+	private Usuario usuario;
+
+	@Column(name = "nome_titular")
+	private String nomeTitular;
+	@Column(name = "nome_fantasia")
+	private String nomeFantasia;
+	private Long cnpj;
+	@Column(name = "data_fundacao")
+	private Date dataFundacao;
+
+	public String getNomeTitular() {
+		return nomeTitular;
+	}
+
+	public void setNomeTitular(String nomeTitular) {
+		this.nomeTitular = nomeTitular;
+	}
+
+	public String getNomeFantasia() {
+		return nomeFantasia;
+	}
+
+	public void setNomeFantasia(String nomeFantasia) {
+		this.nomeFantasia = nomeFantasia;
+	}
+
+	public Long getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(Long cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public Date getDataFundacao() {
+		return dataFundacao;
+	}
+
+	public void setDataFundacao(Date dataFundacao) {
+		this.dataFundacao = dataFundacao;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public Integer getCodigoUsuario() {
+		return codigoUsuario;
+	}
+
+	public void setCodigoUsuario(Integer codigoUsuario) {
+		this.codigoUsuario = codigoUsuario;
+	}
+
+}

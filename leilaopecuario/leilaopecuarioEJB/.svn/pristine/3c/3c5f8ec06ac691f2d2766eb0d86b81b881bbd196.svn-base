@@ -1,0 +1,12 @@
+package com.leilaopecuario.persistencia;
+
+import javax.ejb.Local;
+
+import com.leilaopecuario.vo.LeilaoVO;
+
+@Local
+public interface ControladorPersistenciaLeilaoLocal {
+
+	public void inserirLeilao(LeilaoVO leilaoVO);
+
+}

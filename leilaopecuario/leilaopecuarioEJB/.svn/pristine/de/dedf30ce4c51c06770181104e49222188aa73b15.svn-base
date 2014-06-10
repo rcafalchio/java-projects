@@ -1,0 +1,42 @@
+package com.leilaopecuario.vo;
+
+public class AnimalVO {
+
+	private String raca;
+	private String vacinas;
+	private Integer idadeMeses;
+	private String localidadeCriacao;
+
+	public String getRaca() {
+		return raca;
+	}
+
+	public void setRaca(String raca) {
+		this.raca = raca;
+	}
+
+	public String getVacinas() {
+		return vacinas;
+	}
+
+	public void setVacinas(String vacinas) {
+		this.vacinas = vacinas;
+	}
+
+	public Integer getIdadeMeses() {
+		return idadeMeses;
+	}
+
+	public void setIdadeMeses(Integer idadeMeses) {
+		this.idadeMeses = idadeMeses;
+	}
+
+	public String getLocalidadeCriacao() {
+		return localidadeCriacao;
+	}
+
+	public void setLocalidadeCriacao(String localidadeCriacao) {
+		this.localidadeCriacao = localidadeCriacao;
+	}
+
+}

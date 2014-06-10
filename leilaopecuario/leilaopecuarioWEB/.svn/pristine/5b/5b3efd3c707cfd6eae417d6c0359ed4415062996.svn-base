@@ -1,0 +1,168 @@
+package br.com.leilaopecuario.bean;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.apache.log4j.Logger;
+import org.primefaces.event.FlowEvent;
+
+import com.leilaopecuario.constantes.ConstantesMensagens;
+import com.leilaopecuario.entidades.Estado;
+import com.leilaopecuario.entidades.Logradouro;
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.negocio.GerenciadorUsuarioLocal;
+import com.leilaopecuario.persistencia.ControladorPersistenciaEnderecoLocal;
+import com.leilaopecuario.vo.LogradouroVO;
+import com.leilaopecuario.vo.TelefoneVO;
+import com.leilaopecuario.vo.UsuarioVO;
+
+@ManagedBean
+@ViewScoped
+public class ControladorUsuarioBean {
+
+	private final static Logger LOGGER = Logger
+			.getLogger(ControladorUsuarioBean.class);
+
+	@EJB
+	private GerenciadorUsuarioLocal gerenciadorUsuario;
+
+	@EJB
+	private ControladorPersistenciaEnderecoLocal controladorPersistenciaEndereco;
+
+	private UsuarioVO usuario = null;
+	private Integer cep;
+	private TelefoneVO telefone = null;
+	private String estado;
+	private Integer tipoLogradouro;
+
+	private Map<String, String> listaEstados = null;
+
+	public String onFlowProcess(FlowEvent event) {
+		return event.getNewStep();
+	}
+
+	public UsuarioVO getUsuario() {
+		if (usuario == null) {
+			usuario = new UsuarioVO();
+		}
+		return usuario;
+	}
+
+	public void setUsuario(UsuarioVO usuario) {
+		this.usuario = usuario;
+	}
+
+	public List<LogradouroVO> getRecuperaListaLogradouros() {
+		List<LogradouroVO> listaLogradouroVO = null;
+		try {
+			final List<Logradouro> listaLogradourosAux = controladorPersistenciaEndereco
+					.recuperaListaLogradouros();
+			listaLogradouroVO = new ArrayList<LogradouroVO>();
+			for (Logradouro logradouro : listaLogradourosAux) {
+				final LogradouroVO logradouroVO = new LogradouroVO();
+				logradouroVO.setCodigo(logradouro.getCodigo());
+				logradouroVO.setDescricao(logradouro.getDescricao());
+				listaLogradouroVO.add(logradouroVO);
+			}
+		} catch (Exception e) {
+			LOGGER.error("Ocorreu um erro no método cadastraUsuario", e);
+		}
+
+		return listaLogradouroVO;
+	}
+
+	public String cadastraUsuario() {
+
+		String retorno = "";
+		try {
+			final String fraseErro = gerenciadorUsuario.gravaUsuario(usuario);
+			if (fraseErro == null) {
+				FacesContext.getCurrentInstance().addMessage(
+						"msg_cadastro",
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								ConstantesMensagens.INFO_USUARIO_CADASTRADO,
+								null));
+				retorno = "cadastrado";
+			} else {
+				FacesContext.getCurrentInstance().addMessage(
+						"msg_cadastro",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR,
+								fraseErro, null));
+			}
+		} catch (LeilaoException e) {
+			LOGGER.error("Ocorreu um erro no método cadastraUsuario", e);
+		}
+
+		return retorno;
+	}
+
+	public String reinit() {
+		telefone = new TelefoneVO();
+
+		return null;
+	}
+
+	public Map<String, String> getListaEstados() {
+		try {
+			if (listaEstados == null) {
+				List<Estado> listaEstadosAux = controladorPersistenciaEndereco
+						.recuperaListaEstados();
+				listaEstados = new HashMap<String, String>();
+				for (Estado estado : listaEstadosAux) {
+					listaEstados.put(estado.getUf(), estado.getDescricao());
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error("Ocorreu um erro no método cadastraUsuario", e);
+		}
+		return listaEstados;
+	}
+
+	public void setListaEstados(Map<String, String> listaEstados) {
+		this.listaEstados = listaEstados;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Integer getTipoLogradouro() {
+		return tipoLogradouro;
+	}
+
+	public void setTipoLogradouro(Integer tipoLogradouro) {
+		this.tipoLogradouro = tipoLogradouro;
+	}
+
+	public Integer getCep() {
+		return cep;
+	}
+
+	public void setCep(Integer cep) {
+		this.cep = cep;
+	}
+
+	public TelefoneVO getTelefone() {
+		if (telefone == null) {
+			telefone = new TelefoneVO();
+		}
+		return telefone;
+	}
+
+	public void setTelefone(TelefoneVO telefone) {
+		this.telefone = telefone;
+	}
+
+}

@@ -1,0 +1,47 @@
+package com.leilaopecuario.entidades;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "lance")
+public class Lance {
+
+	@EmbeddedId
+	private ChaveLance chaveLance;
+
+	@Column(name = "lance")
+	private Double lance;
+
+	@Column(name = "data_lance")
+	private Date dataLance;
+
+	public ChaveLance getChaveLance() {
+		return chaveLance;
+	}
+
+	public void setChaveLance(ChaveLance chaveLance) {
+		this.chaveLance = chaveLance;
+	}
+
+	public Double getLance() {
+		return lance;
+	}
+
+	public void setLance(Double lance) {
+		this.lance = lance;
+	}
+
+	public Date getDataLance() {
+		return dataLance;
+	}
+
+	public void setDataLance(Date dataLance) {
+		this.dataLance = dataLance;
+	}
+
+}

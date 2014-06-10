@@ -1,0 +1,33 @@
+package com.leilaopecuario.vo;
+
+public class CaminhoFotoVO {
+
+	private Integer codigo;
+	private String caminho;
+	private String fotoPrincipal;
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getCaminho() {
+		return caminho;
+	}
+
+	public void setCaminho(String caminho) {
+		this.caminho = caminho;
+	}
+
+	public String getFotoPrincipal() {
+		return fotoPrincipal;
+	}
+
+	public void setFotoPrincipal(String fotoPrincipal) {
+		this.fotoPrincipal = fotoPrincipal;
+	}
+
+}

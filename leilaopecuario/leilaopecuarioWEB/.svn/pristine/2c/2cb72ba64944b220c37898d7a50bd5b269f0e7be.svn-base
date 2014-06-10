@@ -1,0 +1,48 @@
+package br.com.leilaoweb.bean;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import org.primefaces.event.FlowEvent;
+
+import com.leilaopecuario.vo.UsuarioVO;
+
+@ManagedBean
+@SessionScoped
+public class ControleUsuarioBean {
+
+	private UsuarioVO usuario = new UsuarioVO();
+	private Integer cep;
+
+	public String onFlowProcess(FlowEvent event) {
+		return event.getNewStep();
+	}
+
+	public UsuarioVO getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(UsuarioVO usuario) {
+		this.usuario = usuario;
+	}
+
+	public void cadastraUsuario(ActionEvent actionEvent) {
+		// Persist user
+
+		FacesMessage msg = new FacesMessage("Successful", "Welcome :"
+				+ usuario.getNome());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public Integer getCep() {
+		return cep;
+	}
+
+	public void setCep(Integer cep) {
+		this.cep = cep;
+	}
+	
+}

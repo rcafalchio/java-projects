@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/layout/layout2.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="form_lance">
+
+			<p:dialog header="Fotos" widgetVar="fotosDialog" modal="true">
+				<p:outputPanel id="fotos_leilao" layout="block">
+					<p:galleria value="#{controladorLanceBean.listaFotos}" var="image">
+						<p:graphicImage
+							value="/arquivos_leilao/fotos/#{controladorLanceBean.leilaoVO.codigo}/#{image}" />
+					</p:galleria>
+				</p:outputPanel>
+			</p:dialog>
+
+			<p:messages errorClass="error" id="msg_cadastro" />
+
+			<p:fieldset legend="Lance">
+
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:commandLink update=":form_lance:fotos_leilao"
+						oncomplete="fotosDialog.show()" title="Ver fotos">
+						<p:graphicImage
+							value="/arquivos_leilao/fotos/#{controladorLanceBean.leilaoVO.codigo}/#{controladorLanceBean.leilaoVO.caminhosFotos.fotoPrincipal}"
+							width="200px" height="200px" />
+					</p:commandLink>
+
+					<h:panelGrid columns="2" cellpadding="10">
+
+						<h:outputText value="Lance atual: " />
+						<h:outputText id="lance_atual"
+							value="#{controladorLanceBean.leilaoVO.informacoesLances.lanceAtual}">
+							<f:convertNumber locale="pt_BR" maxFractionDigits="2"
+								minFractionDigits="2" />
+						</h:outputText>
+
+						<h:outputText value="Último dia para efetuar lance: " />
+						<h:outputText id="data_final" value="#{controladorLanceBean.leilaoVO.dataEHoraFinal}">
+							<f:convertDateTime locale="pt_BR" />
+						</h:outputText>
+
+						<p:inputText id="lance" required="true"
+							requiredMessage="É necessário preencher o lance!"
+							value="#{controladorLanceBean.lanceVO.lance}"
+							converter="conversorMoedaInput" />
+
+						<p:commandButton value="Enviar Lance" update="msg_cadastro"
+							action="#{controladorLanceBean.enviarLance}" />
+
+					</h:panelGrid>
+				</h:panelGrid>
+
+			</p:fieldset>
+
+			<p:tabView effect="slide" effectDuration="normal">
+
+				<p:tab title="Dados do Leilão">
+					<h:panelGrid columns="2" cellpadding="10">
+
+						<h:outputText value="Descricao: " />
+						<h:outputText id="descricao"
+							value="#{controladorLanceBean.leilaoVO.descricao}" />
+
+						<h:outputText value="Quantidade de lances efetuados: " />
+						<h:outputText id="quantidade_lances"
+							value="#{controladorLanceBean.leilaoVO.informacoesLances.quantidadeLancesEfetuados}" />
+
+					</h:panelGrid>
+				</p:tab>
+
+				<p:tab title="Dados do Animal">
+					<h:panelGrid columns="2" cellpadding="10">
+
+						<h:outputText value="Idade: " />
+						<h:outputText id="idade_animal"
+							value="#{controladorLanceBean.leilaoVO.animalVO.idadeMeses} meses" />
+
+						<h:outputText value="Raça: " />
+						<h:outputText id="raca"
+							value="#{controladorLanceBean.leilaoVO.animalVO.raca}" />
+
+						<h:outputText value="Local de criação: " />
+						<h:outputText id="local"
+							value="#{controladorLanceBean.leilaoVO.animalVO.localidadeCriacao}" />
+
+					</h:panelGrid>
+				</p:tab>
+
+				<p:tab title="Vacinas">
+					<p:dataTable var="vacina"
+						value="#{controladorLanceBean.leilaoVO.animalVO.vacinas}">
+						<p:column headerText="Sigla da vacina">
+							<h:outputText value="#{vacina.sigla}" />
+						</p:column>
+
+						<p:column headerText="Nome da vacina">
+							<h:outputText value="#{vacina.nomeVacina}" />
+						</p:column>
+
+						<p:column headerText="Descrição">
+							<h:outputText value="#{vacina.descricaoVacina}" />
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+
+			</p:tabView>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

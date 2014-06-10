@@ -1,0 +1,27 @@
+package com.leilaopecuario.persistencia;
+
+import java.util.List;
+
+import javax.ejb.Local;
+
+import com.leilaopecuario.entidades.Estado;
+import com.leilaopecuario.entidades.Logradouro;
+
+@Local
+public interface ControladorPersistenciaEnderecoLocal {
+
+	/**
+	 * Retorna a lista de logradouros (Rua,Av,Alameda)
+	 * 
+	 * @return List<Logradouro>
+	 */
+	public List<Logradouro> recuperaListaLogradouros();
+
+	/**
+	 * Retorna a lista de estados
+	 * 
+	 * @return List<Estado>
+	 */
+	public List<Estado> recuperaListaEstados();
+
+}

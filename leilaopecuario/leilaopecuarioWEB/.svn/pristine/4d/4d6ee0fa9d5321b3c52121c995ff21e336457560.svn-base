@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+	<display-name>leilaopecuarioWEB</display-name>
+
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>humanity</param-value>
+	</context-param>
+	
+	<!-- Protected Areas -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Usuarios</web-resource-name>
+			<url-pattern>/paginas/protegidas/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>usuario_geral</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<!-- Validation By Form -->
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/paginas/publicas/login.xhtml</form-login-page>
+			<form-error-page>/paginas/publicas/falhalogin.xhtml</form-error-page>
+		</form-login-config>
+	</login-config>
+
+	<!-- Allowed Roles -->
+	<security-role>
+		<role-name>usuario_geral</role-name>
+	</security-role>
+
+	<!-- Filter to get the user name and work with it -->
+	<filter>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>br.com.leilaopecuario.filters.LoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/paginas/protegidas/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>FileUploadFilter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>FileUploadFilter</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
+	</filter-mapping>
+
+	<mime-mapping>
+		<extension>jpg</extension>
+		<mime-type>image/jpeg</mime-type>
+	</mime-mapping>
+
+	<mime-mapping>
+		<extension>png</extension>
+		<mime-type>image/png</mime-type>
+	</mime-mapping>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+</web-app>

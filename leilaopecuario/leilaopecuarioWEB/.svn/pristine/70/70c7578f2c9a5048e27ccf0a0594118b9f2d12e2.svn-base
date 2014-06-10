@@ -1,0 +1,103 @@
+package br.com.leilaopecuario.bean;
+
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+
+import org.apache.log4j.Logger;
+import org.primefaces.event.ToggleEvent;
+
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.negocio.GerenciadorLeilaoLocal;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@ManagedBean
+public class ControladorLeilaoBean {
+
+	private final static Logger LOGGER = Logger.getLogger(ControladorLeilaoBean.class);
+
+	private List<LeilaoVO> leiloes = null;
+	private LeilaoVO leilaoVO = null;
+	private List<String> listaFotos = null;
+	private String fotoPrincipal = null;
+
+	@EJB
+	private GerenciadorLeilaoLocal gerenciadorLeilao;
+
+	@PostConstruct
+	public void init() {
+
+		try {
+			this.leiloes = gerenciadorLeilao.recuperaLeiloesAtivos();
+		} catch (LeilaoException e) {
+			LOGGER.error("Problema ao recuperar os leilões ativos!");
+		}
+
+	}
+
+	public List<String> carregaListaFotos() {
+		try {
+			if (leilaoVO != null && leilaoVO.getCodigo() != null) {
+				this.listaFotos = gerenciadorLeilao.recuperaFotosLeilao(leilaoVO.getCodigo());
+			}
+		} catch (Exception e) {
+			LOGGER.error("Problema ao carregar a lista de fotos do leilão", e);
+		}
+
+		return listaFotos;
+	}
+
+	public List<LeilaoVO> getLeiloes() {
+		return leiloes;
+	}
+
+	public void setLeiloes(List<LeilaoVO> leiloes) {
+		this.leiloes = leiloes;
+	}
+
+	public void handleToggle(ToggleEvent event) {
+
+	}
+
+	public String efetuaLance(LeilaoVO leilaoVO) {
+
+		String retorno = "";
+
+		if (leilaoVO != null) {
+			this.leilaoVO = leilaoVO;
+			retorno = "paginalance";
+		}
+
+		return retorno;
+	}
+
+	public LeilaoVO getLeilaoVO() {
+		return leilaoVO;
+	}
+
+	public void setLeilaoVO(LeilaoVO leilaoVO) {
+		this.leilaoVO = leilaoVO;
+	}
+
+	public List<String> getListaFotos() {
+		if (this.listaFotos == null) {
+			this.listaFotos = carregaListaFotos();
+		}
+		return this.listaFotos;
+	}
+
+	public void setListaFotos(List<String> listaFotos) {
+		this.listaFotos = listaFotos;
+	}
+
+	public String getFotoPrincipal() {
+		return fotoPrincipal;
+	}
+
+	public void setFotoPrincipal(String fotoPrincipal) {
+		this.fotoPrincipal = fotoPrincipal;
+	}
+
+}

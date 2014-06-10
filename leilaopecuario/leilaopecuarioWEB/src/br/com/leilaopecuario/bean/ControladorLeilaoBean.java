@@ -1,0 +1,259 @@
+package br.com.leilaopecuario.bean;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+
+import org.apache.log4j.Logger;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.FlowEvent;
+import org.primefaces.model.DualListModel;
+import org.primefaces.model.UploadedFile;
+
+import br.com.leilaopecuario.util.LeilaoWebHelper;
+
+import com.leilaopecuario.constantes.Constantes;
+import com.leilaopecuario.constantes.ConstantesMensagens;
+import com.leilaopecuario.negocio.GerenciadorLeilaoLocal;
+import com.leilaopecuario.negocio.GerenciadorVacinaLocal;
+import com.leilaopecuario.vo.CaminhoFotoVO;
+import com.leilaopecuario.vo.InformacoesLancesVO;
+import com.leilaopecuario.vo.LeilaoVO;
+import com.leilaopecuario.vo.VacinaVO;
+
+@ManagedBean
+@ViewScoped
+public class ControladorLeilaoBean {
+
+	private final static Logger LOGGER = Logger.getLogger(ControladorLeilaoBean.class);
+
+	private List<LeilaoVO> leiloes = null;
+	private LeilaoVO leilaoVO = null;
+	private List<UploadedFile> listaDeFotos = new ArrayList<UploadedFile>();
+	private String fotoPrincipal = null;
+	private UploadedFile fotoSelecionadaCapa = null;
+	private DualListModel<String> vacinas = null;
+
+	@ManagedProperty(value = "#{controladorLoginBean}")
+	private ControladorLoginBean controladorLoginBean;
+
+	@EJB
+	private GerenciadorLeilaoLocal gerenciadorLeilao;
+
+	@EJB
+	private GerenciadorVacinaLocal gerenciadorVacina;
+
+	public void fileUploadAction(FileUploadEvent event) {
+		
+		try {
+			listaDeFotos.add(event.getFile());
+			FacesContext.getCurrentInstance().addMessage("msg_foto",
+					new FacesMessage(FacesMessage.SEVERITY_INFO, ConstantesMensagens.INFO_FOTO_CARREGADA, ""));
+		} catch (Exception ex) {
+			System.out.println("Erro no upload de imagem" + ex);
+		}
+	}
+
+	@PostConstruct
+	public void init() {
+
+		try {
+			// recupera os leilões para exibí-los na página de pesquisar
+			this.leiloes = gerenciadorLeilao.recuperaLeiloesAtivos();
+			
+			if(leiloes!=null && !leiloes.isEmpty()){
+				// Ajusta os lances que estiverem nulos
+				ajustaLanceAtual(leiloes);
+
+				final FacesContext aFacesContext = FacesContext.getCurrentInstance();
+				final ServletContext context = (ServletContext) aFacesContext.getExternalContext().getContext();
+				final String caminhoFotos = LeilaoWebHelper.recuperaWorkSpace(context.getRealPath("/"))
+						+ Constantes.DIRETORIO_FOTOS_LEILAO;
+				final String caminhoGravarFotos = context.getRealPath("/")
+						+ Constantes.DIRETORIO_FOTOS_LEILAO_BARRA_INVERTIDA;
+				LeilaoWebHelper.gravarFotos(caminhoFotos, caminhoGravarFotos);
+
+				// recupera a lista de vacinas
+				final List<String> listaVacinas = gerenciadorVacina.obtemTodasNomesVacinas();
+				vacinas = new DualListModel<String>(listaVacinas, new ArrayList<String>());
+			}
+		} catch (Exception e) {
+			LOGGER.error("Problema ao iniciar os elementos!", e);
+		}
+
+	}
+
+	private void ajustaLanceAtual(List<LeilaoVO> leiloes2) {
+		for (LeilaoVO leilaoVO : leiloes2) {
+			// Seta o lance atual como o lance mínimo cadastrado
+			if (leilaoVO.getInformacoesLances() == null) {
+				leilaoVO.setInformacoesLances(new InformacoesLancesVO());
+				leilaoVO.getInformacoesLances().setLanceAtual(leilaoVO.getLanceInicial());
+				// ajusta a quantidade de lance para zero
+				leilaoVO.getInformacoesLances().setQuantidadeLancesEfetuados(0);
+			} else if (leilaoVO.getInformacoesLances().getLanceAtual() == null) {
+				leilaoVO.getInformacoesLances().setLanceAtual(leilaoVO.getLanceInicial());
+				leilaoVO.getInformacoesLances().setQuantidadeLancesEfetuados(0);
+			}
+
+		}
+
+	}
+
+	public String cadastraLeilao() {
+
+		String retorno = "";
+
+		try {
+
+			if (fotoSelecionadaCapa == null && listaDeFotos != null && !listaDeFotos.isEmpty()) {
+				FacesContext.getCurrentInstance().addMessage("msg_cadastro",
+						new FacesMessage(FacesMessage.SEVERITY_WARN, ConstantesMensagens.SELECIONE_CAPA, ""));
+				retorno = "";
+			} else {
+
+				// Seta o usuário que está cadastrando o leilão
+				leilaoVO.setUsuarioVO(controladorLoginBean.getUsuario());
+				leilaoVO.setDataCadastro(new Date());
+
+				// Atribui as vacinas
+				final List<String> lista = vacinas.getTarget();
+				for (String nome : lista) {
+					final VacinaVO vacinaVO = gerenciadorVacina.obtemVacinaPorNome(nome);
+					if (vacinaVO != null) {
+						leilaoVO.getAnimalVO().getVacinas().add(vacinaVO);
+					}
+				}
+
+				// Insere o leilão sem as fotos
+				String frase = gerenciadorLeilao.gravaLeilao(leilaoVO);
+
+				if (frase != null) {
+					FacesContext.getCurrentInstance().addMessage("msg_cadastro",
+							new FacesMessage(FacesMessage.SEVERITY_WARN, frase, ""));
+					retorno = "";
+				} else {
+					Integer codigoLeilao = leilaoVO.getCodigo();
+					FacesContext aFacesContext = FacesContext.getCurrentInstance();
+					ServletContext context = (ServletContext) aFacesContext.getExternalContext().getContext();
+					String caminhofotos = LeilaoWebHelper.recuperaWorkSpace(context.getRealPath("/"));
+					caminhofotos = caminhofotos + Constantes.DIRETORIO_FOTOS_LEILAO + codigoLeilao + "/";
+
+					// Aqui cria o diretorio caso não exista
+					File file = new File(caminhofotos);
+					file.mkdirs();
+
+					CaminhoFotoVO caminhoFoto = new CaminhoFotoVO();
+					caminhoFoto.setCaminho(caminhofotos);
+					if (fotoSelecionadaCapa != null) {
+						caminhoFoto.setFotoPrincipal(fotoSelecionadaCapa.getFileName());
+					} else {
+						caminhoFoto.setFotoPrincipal(Constantes.SEM_IMAGEM);
+					}
+					leilaoVO.setCaminhosFotos(caminhoFoto);
+					gerenciadorLeilao.atualizarLeilao(leilaoVO);
+
+					// Somente grava as fotos se conseguir atualizar o caminho
+					// das
+					// fotos
+					for (UploadedFile foto : listaDeFotos) {
+
+						byte[] arquivo = foto.getContents();
+						FileOutputStream fos = new FileOutputStream(file + "\\" + foto.getFileName());
+						fos.write(arquivo);
+						fos.close();
+
+					}
+					FacesContext.getCurrentInstance()
+							.addMessage(
+									"msg_cadastro",
+									new FacesMessage(FacesMessage.SEVERITY_INFO,
+											ConstantesMensagens.INFO_LEILAO_CADASTRADO, ""));
+
+					retorno = "index";
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error("Ocorreu um erro no método cadastraLeilao()", e);
+			FacesContext.getCurrentInstance().addMessage("msg_cadastro",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, ConstantesMensagens.FALHA_GENERICA, null));
+			retorno = "";
+		}
+
+		return retorno;
+	}
+
+	public LeilaoVO getLeilaoVO() {
+		if (this.leilaoVO == null) {
+			this.leilaoVO = new LeilaoVO();
+		}
+		return leilaoVO;
+	}
+
+	public void setLeilaoVO(LeilaoVO leilaoVO) {
+		this.leilaoVO = leilaoVO;
+	}
+
+	public List<LeilaoVO> getLeiloes() {
+		return leiloes;
+	}
+
+	public void setLeiloes(List<LeilaoVO> leiloes) {
+		this.leiloes = leiloes;
+	}
+
+	public String onFlowProcess(FlowEvent event) {
+		return event.getNewStep();
+	}
+
+	public String getFotoPrincipal() {
+		return fotoPrincipal;
+	}
+
+	public void setFotoPrincipal(String fotoPrincipal) {
+		this.fotoPrincipal = fotoPrincipal;
+	}
+
+	public List<UploadedFile> getListaDeFotos() {
+		return listaDeFotos;
+	}
+
+	public void setListaDeFotos(List<UploadedFile> listaDeFotos) {
+		this.listaDeFotos = listaDeFotos;
+	}
+
+	public UploadedFile getFotoSelecionadaCapa() {
+		return fotoSelecionadaCapa;
+	}
+
+	public void setFotoSelecionadaCapa(UploadedFile fotoSelecionadaCapa) {
+		this.fotoSelecionadaCapa = fotoSelecionadaCapa;
+	}
+
+	public DualListModel<String> getVacinas() {
+		return vacinas;
+	}
+
+	public void setVacinas(DualListModel<String> vacinas) {
+		this.vacinas = vacinas;
+	}
+
+	public ControladorLoginBean getControladorLoginBean() {
+		return controladorLoginBean;
+	}
+
+	public void setControladorLoginBean(ControladorLoginBean controladorLoginBean) {
+		this.controladorLoginBean = controladorLoginBean;
+	}
+}

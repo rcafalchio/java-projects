@@ -1,0 +1,44 @@
+package com.leilaopecuario.negocio;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.exception.PersistenciaException;
+import com.leilaopecuario.exception.ValidacaoException;
+import com.leilaopecuario.persistencia.ControladorPersistenciaUsuarioLocal;
+import com.leilaopecuario.vo.UsuarioVO;
+
+@Stateless
+public class GerenciadorUsuario implements GerenciadorUsuarioLocal {
+
+	@EJB
+	private ControladorPersistenciaUsuarioLocal controladorPersistenciaUsuario;
+
+	@EJB
+	private ValidadorUsuarioLocal validadorUsuario;
+
+	@Override
+	public String gravaUsuario(final UsuarioVO usuarioVO)
+			throws LeilaoException {
+
+		String fraseErro = null;
+		try {
+			// Validação de usuário
+			fraseErro = validadorUsuario.validaUsuario(usuarioVO);
+			if (fraseErro == null) {
+				// Efetua a persistencia do usuário
+				controladorPersistenciaUsuario.inserirUsuario(usuarioVO);
+			}
+		} catch (PersistenciaException e) {
+			// TODO Colocar o log4j
+			System.out.println(e.getMessage());
+		} catch (ValidacaoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return fraseErro;
+
+	}
+
+}

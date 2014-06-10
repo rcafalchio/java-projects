@@ -1,0 +1,80 @@
+package com.leilaopecuario.vo;
+
+import java.util.Date;
+
+public class LeilaoVO {
+
+	private Integer codigo;
+	private String titulo;
+	private String descricao;
+	private String caminhoFotos;
+	private Date dataEHoraFinal;
+	private Date dataCadastro;
+	private InformacoesLancesVO informacoesLances;
+	private AnimalVO animalVO;
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public String getCaminhoFotos() {
+		return caminhoFotos;
+	}
+
+	public void setCaminhoFotos(String caminhoFotos) {
+		this.caminhoFotos = caminhoFotos;
+	}
+
+	public Date getDataEHoraFinal() {
+		return dataEHoraFinal;
+	}
+
+	public void setDataEHoraFinal(Date dataEHoraFinal) {
+		this.dataEHoraFinal = dataEHoraFinal;
+	}
+
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+
+	public InformacoesLancesVO getInformacoesLances() {
+		return informacoesLances;
+	}
+
+	public void setInformacoesLances(InformacoesLancesVO informacoesLances) {
+		this.informacoesLances = informacoesLances;
+	}
+
+	public AnimalVO getAnimalVO() {
+		return animalVO;
+	}
+
+	public void setAnimalVO(AnimalVO animalVO) {
+		this.animalVO = animalVO;
+	}
+
+}

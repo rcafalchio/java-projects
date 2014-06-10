@@ -1,0 +1,56 @@
+package com.leilaopecuario.persistencia;
+
+import java.util.List;
+
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import com.leilaopecuario.entidades.Estado;
+import com.leilaopecuario.entidades.Logradouro;
+
+@Stateless
+public class ControladorPersistenciaEndereco implements
+		ControladorPersistenciaEnderecoLocal {
+
+	@PersistenceContext(name = "leilao")
+	private EntityManager entityManager;
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Logradouro> recuperaListaLogradouros() {
+
+		List<Logradouro> listaLogradouros = null;
+
+		try {
+			final String queryString = "SELECT l FROM Logradouro l "
+					+ "order by l.descricao";
+			Query query = entityManager.createQuery(queryString);
+			listaLogradouros = query.getResultList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return listaLogradouros;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Estado> recuperaListaEstados() {
+
+		List<Estado> listaEstados = null;
+
+		try {
+			final String queryString = "SELECT e FROM Estado e "
+					+ "order by e.uf";
+			Query query = entityManager.createQuery(queryString);
+			listaEstados = query.getResultList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return listaEstados;
+	}
+
+}

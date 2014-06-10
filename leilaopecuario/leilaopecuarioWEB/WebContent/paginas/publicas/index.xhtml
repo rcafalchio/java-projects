@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/layout/layout.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:growl id="msg_cadastro" showDetail="true" sticky="true"
+			autoUpdate="true" />
+
+		<p:panel header="Bem vindo!">
+			<br />
+			<h:outputText value="Bem vindo ao site Leilão Pecuário Web." />
+			<h:outputText
+				value="Este sistema tem como objetivo facilitar a compra e venda de animais através de leilões." />
+			<br />
+		</p:panel>
+
+		<p:separator id="separator" />
+
+		<p:panel header="Leilões em andamento" />
+
+		<p:dataGrid var="leilao" value="#{controladorLeilaoBean.leiloes}"
+			columns="3" rows="3" paginator="true"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			paginatorAlwaysVisible="false"
+			emptyMessage="Não existem leilões ativos no momento">
+
+			<p:panel header="#{leilao.titulo}" style="text-align:center">
+				<div align="center">
+					<h:panelGrid columns="1" style="width:50%">
+						<p:commandLink title="Vizualisar leilão"
+							action="#{controladorLanceBean.efetuaLance(leilao)}">
+							<p:graphicImage
+								value="/arquivos_leilao/fotos/#{leilao.codigo}/#{leilao.caminhosFotos.fotoPrincipal}"
+								width="250px" height="210px" />
+						</p:commandLink>
+
+						<p:panel>
+							<h:outputText value="lance atual: " />
+							<h:outputText id="lance_atual"
+								value="#{leilao.informacoesLances.lanceAtual}">
+								<f:convertNumber locale="pt_BR" maxFractionDigits="2"
+									minFractionDigits="2" />
+							</h:outputText>
+						</p:panel>
+						<p:panel>
+							<h:outputText value="Data de fechamento: " />
+							<h:outputText id="data_final"
+								value="#{leilao.dataEHoraFinal}">
+								<f:convertDateTime locale="pt_BR" />
+							</h:outputText>
+						</p:panel>
+						<p:commandLink title="Vizualisar leilão"
+							action="#{controladorLanceBean.efetuaLance(leilao)}">
+
+							<h:outputText styleClass="ui-icon ui-icon-search"
+								style="margin:0 auto;" />
+						</p:commandLink>
+
+					</h:panelGrid>
+				</div>
+			</p:panel>
+
+		</p:dataGrid>
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,20 @@
+package com.leilaopecuario.negocio;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+
+import com.leilaopecuario.persistencia.ControladorPersistenciaUsuarioLocal;
+import com.leilaopecuario.vo.UsuarioVO;
+
+@Stateless
+public class GerenciadorUsuario implements GerenciadorUsuarioLocal {
+
+	@EJB
+	private ControladorPersistenciaUsuarioLocal controladorPersistenciaUsuario;
+
+	@Override
+	public void gravaUsuario(UsuarioVO usuarioVO) {
+		controladorPersistenciaUsuario.inserirUsuario(usuarioVO);
+	}
+
+}

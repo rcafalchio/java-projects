@@ -1,0 +1,49 @@
+package com.leilaopecuario.negocio;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+
+import org.apache.log4j.Logger;
+
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.exception.PersistenciaException;
+import com.leilaopecuario.exception.ValidacaoException;
+import com.leilaopecuario.persistencia.ControladorPersistenciaUsuarioLocal;
+import com.leilaopecuario.vo.UsuarioVO;
+
+@Stateless
+public class GerenciadorUsuario implements GerenciadorUsuarioLocal {
+
+	@EJB
+	private ControladorPersistenciaUsuarioLocal controladorPersistenciaUsuario;
+
+	@EJB
+	private ValidadorUsuarioLocal validadorUsuario;
+
+	private final static Logger LOGGER = Logger
+			.getLogger(GerenciadorUsuario.class);
+
+	@Override
+	public String gravaUsuario(final UsuarioVO usuarioVO)
+			throws LeilaoException {
+
+		String fraseErro = null;
+		try {
+			// Validação de usuário
+			fraseErro = validadorUsuario.validaUsuario(usuarioVO);
+			if (fraseErro == null) {
+				// Efetua a persistencia do usuário
+				controladorPersistenciaUsuario.inserirUsuario(usuarioVO);
+			}
+		} catch (PersistenciaException e) {
+			LOGGER.error("Ocorreu um problema no método gravaUsuario", e);
+			fraseErro = "Problema ao gravar";
+		} catch (ValidacaoException e) {
+			LOGGER.error("Ocorreu um problema no método gravaUsuario", e);
+			fraseErro = "Problema ao gravar";
+		}
+		return fraseErro;
+
+	}
+
+}

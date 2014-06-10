@@ -1,0 +1,64 @@
+package com.leilaopecuario.negocio;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+
+import org.apache.log4j.Logger;
+
+import com.leilaopecuario.entidades.Leilao;
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.exception.PersistenciaException;
+import com.leilaopecuario.persistencia.ControladorPersistenciaLeilaoLocal;
+import com.leilaopecuario.vo.InformacoesLancesVO;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@Stateless
+public class GerenciadorLeilao implements GerenciadorLeilaoLocal {
+
+	private final static Logger LOGGER = Logger.getLogger(GerenciadorLeilao.class);
+
+	@EJB
+	private ControladorPersistenciaLeilaoLocal controladorPersistenciaLeilao;
+
+	@Override
+	public void gravaLeilao(LeilaoVO leilaoVO) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public List<LeilaoVO> recuperaLeiloesAtivos() throws LeilaoException {
+
+		List<LeilaoVO> listaLeiloes = null;
+
+		try {
+			final List<Leilao> leiloes = controladorPersistenciaLeilao.buscarLeiloesAtivos();
+			listaLeiloes = new ArrayList<LeilaoVO>();
+			for (Leilao leilao : leiloes) {
+				final LeilaoVO leilaoVO = new LeilaoVO();
+				leilaoVO.setDescricao(leilao.getDescricao());
+				leilaoVO.setTitulo(leilao.getTitulo());
+				leilaoVO.setCaminhoFotos(leilao.getCaminhoFotos());
+				leilaoVO.setDataEHoraFinal(leilao.getDataEHoraFinal());
+				// preenche as informações do lance
+				if (leilao.getInformacoesLanceLeilao() != null) {
+					leilaoVO.setInformacoesLances(new InformacoesLancesVO());
+					leilaoVO.getInformacoesLances().setLanceAtual(leilao.getInformacoesLanceLeilao().getLanceAtual());
+					leilaoVO.getInformacoesLances().setQuantidadeLancesEfetuados(
+							leilao.getInformacoesLanceLeilao().getQuantidadeLancesEfetuados());
+				} else {
+					leilaoVO.getInformacoesLances().setLanceAtual(Double.valueOf("0"));
+					leilaoVO.getInformacoesLances().setQuantidadeLancesEfetuados(0);
+				}
+				listaLeiloes.add(leilaoVO);
+			}
+		} catch (PersistenciaException e) {
+			LOGGER.error("Ocorreu um erro no método recuperaLeiloesAtivos", e);
+		}
+
+		return listaLeiloes;
+
+	}
+}

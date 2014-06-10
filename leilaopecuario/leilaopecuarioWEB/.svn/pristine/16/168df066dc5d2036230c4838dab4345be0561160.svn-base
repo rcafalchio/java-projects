@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#paginas#cadastrousuario.xhtml"
+  PATH="/paginas/cadastrousuario.xhtml" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#cadastrousuario.xhtml:0" NAME="item"
+   PATH="/paginas/cadastrousuario.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="cadastrado::#paginas#index.xhtml"
+    NAME="output" PATH="/paginas/index.xhtml"
+    TARGET="rules:#paginas#index.xhtml" TITLE="cadastrado" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#index.xhtml"
+  PATH="/paginas/index.xhtml" SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

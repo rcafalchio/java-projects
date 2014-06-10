@@ -1,0 +1,40 @@
+package com.leilaopecuario.persistencia;
+
+import java.util.List;
+
+import javax.ejb.Local;
+
+import com.leilaopecuario.entidades.CaminhoFotos;
+import com.leilaopecuario.entidades.Leilao;
+import com.leilaopecuario.exception.PersistenciaException;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@Local
+public interface ControladorPersistenciaLeilaoLocal {
+
+	/**
+	 * Insere um leilão na base
+	 * 
+	 * @param leilaoVO
+	 * @throws PersistenciaException
+	 */
+	public void inserirLeilao(LeilaoVO leilaoVO) throws PersistenciaException;
+
+	/**
+	 * Recupera todos os leiloes ativos
+	 * 
+	 * @return lista de leilões
+	 * @throws PersistenciaException
+	 */
+	public List<Leilao> buscarLeiloesAtivos() throws PersistenciaException;
+
+	/**
+	 * Obtem caminhos das fotos do leilão
+	 * 
+	 * @param codigo
+	 * @return List<CaminhoFotos>
+	 * @throws PersistenciaException 
+	 */
+	public List<CaminhoFotos> obtemCaminhoFotos(Integer codigo) throws PersistenciaException;
+
+}
