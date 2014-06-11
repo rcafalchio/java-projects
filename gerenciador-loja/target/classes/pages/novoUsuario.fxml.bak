@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?scenebuilder-background-color 0x708090ff?>
+<?scenebuilder-stylesheet ../styles/style_tecway.css?>
+
+<StackPane id="StackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="stackPane-cinza" xmlns:fx="http://javafx.com/fxml" fx:controller="br.com.tecway.gerenciadorloja.fx.controller.PrincipalController">
+  <children>
+    <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="borderPane-branco">
+      <top>
+        <MenuBar>
+          <menus>
+            <Menu mnemonicParsing="false" text="Arquivo">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#efetuarLogoff" text="Efetuar o logoff" />
+                <SeparatorMenuItem mnemonicParsing="false" />
+                <MenuItem mnemonicParsing="false" onAction="#sair" text="Sair" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" style="" text="Operações">
+              <items>
+                <MenuItem id="" mnemonicParsing="false" onAction="#carregarTelaCaixa" style="" text="Abrir Caixa" />
+                <MenuItem mnemonicParsing="false" onAction="#carregarTelaEstoque" text="Atualizar Estoque" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" style="" text="Cadastro">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#carregarTelaCadastroUsuario" text="Cadastro de usuário" />
+                <MenuItem mnemonicParsing="false" onAction="#carregarTelaCadastroProduto" text="Cadastro de produto" />
+                <MenuItem mnemonicParsing="false" onAction="#carregarTelaCadastroMarca" text="Cadastro de Marca" />
+              </items>
+            </Menu>
+          </menus>
+        </MenuBar>
+      </top>
+    </BorderPane>
+  </children>
+</StackPane>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?language javascript?>
+<?scenebuilder-stylesheet ../styles/style_tecway.css?>
+<?scenebuilder-background-color 0x708090ff?>
+
+<StackPane fx:id="root" prefHeight="310.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml" fx:controller="br.com.tecway.gerenciadorloja.fx.controller.ConsultaProdutosController">
+  <children>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <children>
+        <VBox prefHeight="310.0" prefWidth="706.0">
+          <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
+          </children>
+        </VBox>
+      </children>
+    </HBox>
+  </children>
+</StackPane>

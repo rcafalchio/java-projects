@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+
+<BorderPane id="stageAlert" styleClass="stage-alert" xmlns:fx="http://javafx.com/fxml">
+	<top>
+		<HBox styleClass="stage-alert-bar" alignment="CENTER_RIGHT">
+			<children>
+				<StackPane alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+					<children>
+						<Label id="titleLabel" styleClass="stage-alert-bar-label" text="Title" />
+					</children>
+				</StackPane>
+			</children>
+			<children>
+				<Label id="closeLabel" styleClass="stage-alert-bar-button">
+					<graphic>
+						<ImageView>
+							<image>
+								<Image url="/images/close.png"/>
+							</image>
+						</ImageView>
+					</graphic>
+				</Label>
+			</children>
+		</HBox>
+	</top>
+	<left>
+		<HBox styleClass="stage-alert-left" />
+	</left>
+	<right>
+		<HBox styleClass="stage-alert-right" />
+	</right>
+	<center>
+		<BorderPane styleClass="stage-alert-center">
+			<center>
+				<BorderPane>
+					<center>
+						<HBox>
+							<children>
+								<Label id="messageLabel" graphicTextGap="15">
+									<graphic>
+										<ImageView fitWidth="24" fitHeight="24" />
+									</graphic>
+								</Label>
+							</children>
+						</HBox>
+					</center>
+					<bottom>
+						<BorderPane id="errorBorderPane" styleClass="stage-alert-error-border-pane" />
+					</bottom>
+				</BorderPane>
+			</center>
+			<bottom>
+				<HBox spacing="10" id="optionsButtons" alignment="CENTER" />
+			</bottom>
+		</BorderPane>
+	</center>
+	<bottom>
+		<HBox styleClass="stage-alert-bottom" />
+	</bottom>
+</BorderPane>

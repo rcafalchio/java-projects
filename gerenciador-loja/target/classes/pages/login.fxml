@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?language javascript?>
+<?scenebuilder-stylesheet ../styles/style_tecway.css?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" styleClass="stackPane-fundo-principal" xmlns:fx="http://javafx.com/fxml" fx:controller="br.com.tecway.gerenciadorloja.fx.controller.LoginController">
+  <children>
+    <HBox alignment="CENTER" prefHeight="768.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+        <VBox id="centralVbox" alignment="TOP_CENTER" prefHeight="768.0" prefWidth="756.0">
+          <children>
+            <Region prefHeight="200.0" prefWidth="200.0" />
+            <Text id="welcome-text" strokeType="OUTSIDE" strokeWidth="0.0" text="Tec Way Eletrônicos" />
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+              <children>
+                <GridPane alignment="CENTER" prefHeight="100.0" prefWidth="268.0">
+                  <children>
+                    <Label id="" alignment="CENTER" prefHeight="38.0" prefWidth="193.0" styleClass="label-padrao" text="Usuário:" textAlignment="JUSTIFY" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="textUsuario" prefWidth="141.0" promptText="Digite o usuário" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                    <Label id="" alignment="CENTER" prefHeight="38.0" prefWidth="193.0" styleClass="label-padrao" text="Senha:" textAlignment="JUSTIFY" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <PasswordField fx:id="textSenha" onKeyPressed="#efetuarLogin" prefWidth="124.0" promptText="Digite a senha" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Button mnemonicParsing="false" onAction="#efetuarLoginEvent" prefWidth="121.0" text="Efetuar Login" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Hyperlink onAction="#cadastroNovoUsuario" text="Cadastrar (Novo usuáio)" textFill="#1000cc" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  </children>
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="158.0" minWidth="10.0" prefWidth="98.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="256.0" minWidth="10.0" prefWidth="170.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="28.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                </GridPane>
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+      </children>
+    </HBox>
+  </children>
+</AnchorPane>

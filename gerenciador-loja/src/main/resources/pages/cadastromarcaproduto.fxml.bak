@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?scenebuilder-background-color 0x708090ff?>
+<?scenebuilder-stylesheet ../styles/style_tecway.css?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="738.0" prefHeight="576.0" prefWidth="738.0" xmlns:fx="http://javafx.com/fxml" fx:controller="br.com.tecway.gerenciadorloja.fx.controller.CadastroMarcaController">
+  <bottom>
+    <AnchorPane prefHeight="53.0" prefWidth="738.0" />
+  </bottom>
+  <center>
+    <VBox alignment="TOP_CENTER" minHeight="65.0" prefHeight="65.0" prefWidth="738.0">
+      <children>
+        <GridPane alignment="CENTER" maxHeight="307.0" maxWidth="737.0" minHeight="69.0" minWidth="543.0" prefHeight="69.0" prefWidth="737.0">
+          <children>
+            <Label styleClass="label-padrao" text="Nome:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="textNomeMarca" onKeyPressed="#adicionarProduto" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="429.0" minWidth="10.0" prefWidth="50.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="623.0" minWidth="10.0" prefWidth="493.0" />
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+        <HBox fx:id="botoesHBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+          <children>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cadastrar" text="Cadastrar" />
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="447.0" prefWidth="738.0">
+          <children>
+            <TableView fx:id="marcaTableView" prefHeight="361.0" prefWidth="401.0" />
+          </children>
+          <padding>
+            <Insets top="20.0" />
+          </padding>
+        </HBox>
+      </children>
+    </VBox>
+  </center>
+  <top>
+    <VBox alignment="CENTER" prefHeight="40.0" prefWidth="738.0">
+      <children>
+        <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="39.0" prefWidth="676.0" styleClass="label-titulo" text="Cadastro de Marcas" />
+      </children>
+    </VBox>
+  </top>
+</BorderPane>
