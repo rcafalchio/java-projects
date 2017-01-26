@@ -1,0 +1,24 @@
+package com.java;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
+
+public class TesteLambda {
+
+	
+	public static void main(String[] args) {
+//		new TesteLambda().recebeImprime(s -> System.out.println(s), Arrays.asList("D4444","C33","A1","B22"));
+		new TesteLambda().recebeImprime(System.out::println, Arrays.asList("D4444","C33","A1","B22"));
+	}
+	
+	public void recebeImprime(Impressor<String> impressor,List<String> lista){
+		//AS TRES LINHAS SAO A MESMA COISA
+//		lista.sort((s1, s2) -> Integer.compare(s1.length(), s2.length()));
+//		lista.sort(Comparator.comparing(s -> s.length()));
+		lista.sort(String::length);
+		
+		lista.forEach(s -> impressor.imprimeString(s));
+	}
+}
