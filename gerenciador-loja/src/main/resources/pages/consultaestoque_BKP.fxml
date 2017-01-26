@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?scenebuilder-background-color 0x708090ff?>
+<?scenebuilder-stylesheet ../styles/style_tecway.css?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="738.0" prefHeight="768.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="br.com.tecway.gerenciadorloja.fx.controller.ConsultaEstoqueController">
+  <center>
+    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="1024.0">
+      <children>
+        <HBox alignment="TOP_CENTER" prefHeight="78.0" prefWidth="1024.0">
+          <children>
+            <GridPane alignment="TOP_CENTER" prefHeight="61.0" prefWidth="350.0">
+              <children>
+                <Label styleClass="label-padrao" text="Escolha o estoque::" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label fx:id="dinheiroLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <ComboBox fx:id="estoqueComboBox" onAction="#pesquisar" prefHeight="21.0" prefWidth="215.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Item 1" />
+                      <String fx:value="Item 2" />
+                      <String fx:value="Item 3" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="10.0" prefWidth="129.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="221.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+          </children>
+        </HBox>
+        <HBox id="estoqueHbox" alignment="TOP_CENTER" prefHeight="496.0" prefWidth="1024.0">
+          <children>
+            <VBox fx:id="estoqueVBox" alignment="CENTER" prefHeight="482.0" prefWidth="963.0" />
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+  </center>
+  <top>
+    <HBox alignment="CENTER" prefHeight="86.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
+      <children>
+        <Label styleClass="label-titulo" text="Consulta de Estoque" />
+      </children>
+    </HBox>
+  </top>
+</BorderPane>

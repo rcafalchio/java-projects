@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:outputScript name="locale-primefaces.js" library="js" />
+
+<ui:composition template="/layout/layout.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form>
+			<p:growl id="cadastroLeilao" sticky="true" showDetail="true" />
+
+			<p:wizard widgetVar="wiz" nextLabel="Próximo" backLabel="Anterior"
+				flowListener="#{controladorLeilaoBean.onFlowProcess}">
+
+				<!-- ################################### -->
+				<!-- 		Cadatro de Leilão 			 -->
+				<!-- ################################### -->
+				<p:tab id="leilao" title="Leilão">
+					<p:panel header="Dados do Leilão">
+
+						<h:messages errorClass="error" />
+
+						<h:panelGrid columns="2" columnClasses="label, value"
+							styleClass="grid">
+
+							<h:outputText value="Título:" for="titulo" />
+							<p:inputText id="titulo" required="true"
+								value="#{controladorLeilaoBean.leilaoVO.titulo}" />
+
+							<h:outputText value="Descrição:" for="descricao" />
+							<p:inputText id="descricao" required="true"
+								value="#{controladorLeilaoBean.leilaoVO.descricao}" />
+								
+								
+							<h:outputText value="Lance Inicial:" for="lanceinicial" />
+							<p:inputText id="lanceinicial" required="true"
+								value="#{controladorLeilaoBean.leilaoVO.lanceInicial}" />	
+							
+
+						</h:panelGrid>
+					</p:panel>
+					
+				</p:tab>
+				
+				<!-- ################################### -->
+				<!-- 		Animal Leilao   			 -->
+				<!-- ################################### -->
+				<p:tab id="animal" title="Animal">
+					<p:panel header="Dados Animal Leilão">
+
+						<p:messages errorClass="error" />
+
+						<h:panelGrid columns="2" columnClasses="label, value"
+							styleClass="grid">
+
+							<h:outputText value="Idade(Meses):" for="idade_em_meses" />
+							<p:inputText id="idade_em_meses"
+								value="#{controladorLeilaoBean.leilaoVO.animalVO.idadeMeses}" />
+
+							<h:outputText value="Localidade Criação:" for="localidade_de_criacao" />
+							<p:inputText id="localidade_de_criacao"
+								value="#{controladorLeilaoBean.leilaoVO.animalVO.localidadeCriacao}" />
+
+							<h:outputText value="Raça:" for="raca" />
+							<p:inputText id="raca"
+								value="#{controladorLeilaoBean.leilaoVO.animalVO.raca}" />
+
+							<h:outputText value="Vacinas:" for="vacinas" />
+							<p:inputText id="vacinas"
+								value="#{controladorLeilaoBean.leilaoVO.animalVO.raca}" />
+
+						</h:panelGrid>
+					</p:panel>
+					<p:commandButton value="Cadastrar" update="cadastroLeilao"
+						actionListener="#{controladorLeilaoBean.cadastraLeilao}" />
+				</p:tab>
+				
+
+			</p:wizard>
+		</h:form>
+
+		<h:form enctype="multipart/form-data" id="envia">
+
+			
+			<h:outputLabel>Enviar Arquivo: </h:outputLabel>
+
+				<p:fileUpload id="upload" fileUploadListener="#{controladorLeilaoBean.fileUploadAction}" auto="true" label="Escolha Foto"/>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

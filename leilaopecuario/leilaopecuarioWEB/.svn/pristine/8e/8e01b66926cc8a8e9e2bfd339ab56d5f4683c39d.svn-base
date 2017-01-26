@@ -1,0 +1,52 @@
+package br.com.leilaopecuario.bean;
+
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+
+import org.apache.log4j.Logger;
+import org.primefaces.event.ToggleEvent;
+
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.negocio.GerenciadorLeilaoLocal;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@ManagedBean
+public class PesquisarLeilaoBean {
+
+	private final static Logger LOGGER = Logger
+			.getLogger(PesquisarLeilaoBean.class);
+
+	private List<LeilaoVO> leiloes;
+
+	@EJB
+	private GerenciadorLeilaoLocal gerenciadorLeilao;
+
+	@PostConstruct
+	public void init() {
+
+		try {
+			this.leiloes = gerenciadorLeilao.recuperaLeiloesAtivos();
+		} catch (LeilaoException e) {
+			LOGGER.error("Problema ao recuperar os leilões ativos!");
+		}
+
+	}
+
+	public List<LeilaoVO> getLeiloes() {
+		return leiloes;
+	}
+
+	public void setLeiloes(List<LeilaoVO> leiloes) {
+		this.leiloes = leiloes;
+	}
+
+	public void handleToggle(ToggleEvent event) {  
+//        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Fieldset Toggled", "Visibility:" + event.getVisibility());  
+//  
+//        FacesContext.getCurrentInstance().addMessage(null, msg);  
+    }  
+
+}

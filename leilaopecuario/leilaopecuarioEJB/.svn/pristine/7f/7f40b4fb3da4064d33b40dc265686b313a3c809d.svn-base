@@ -1,0 +1,117 @@
+package com.leilaopecuario.persistencia;
+
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import com.leilaopecuario.entidades.Usuario;
+import com.leilaopecuario.exception.PersistenciaException;
+import com.leilaopecuario.vo.UsuarioVO;
+
+@Stateless
+public class ControladorPersistenciaUsuario implements
+		ControladorPersistenciaUsuarioLocal,
+		ControladorPersistenciaUsuarioRemote {
+
+	@PersistenceContext(name = "leilao")
+	private EntityManager entityManager;
+
+	@Override
+	public void inserirUsuario(UsuarioVO usuarioVO)
+			throws PersistenciaException {
+
+		try {
+			// popula as entidades
+			// Usuario
+			final Usuario usuario = this.populaUsuario(usuarioVO);
+			// Empresa
+			// final Empresa empresa = this.populaEmpresa(usuarioVO);
+			// Endereco
+			// final Endereco endereco = this.populaEndereco(usuarioVO);
+			// persiste
+			// usuario.setEmpresa(empresa);
+			// usuario.setEndereco(endereco);
+			entityManager.persist(usuario);
+
+		} catch (Exception e) {
+			// TODO TRATAR COM log4J
+			System.out.println(e.getMessage());
+		}
+
+	}
+
+//	private Endereco populaEndereco(UsuarioVO usuarioVO) {
+//		final Endereco endereco = new Endereco();
+		// if (usuarioVO != null && usuarioVO.getEmpresa() != null
+		// && usuarioVO.getEmpresa().getEndereco() != null) {
+		// endereco.setBairro(usuarioVO.getEmpresa().getEndereco().getBairro());
+		// endereco.setCep(usuarioVO.getEmpresa().getEndereco().getCep());
+		// endereco.setCidade(usuarioVO.getEmpresa().getEndereco().getCidade());
+		// if (usuarioVO.getEmpresa().getEndereco().getUf() != null) {
+		// endereco.setEstado(new Estado());
+		// endereco.getEstado().setUf(
+		// usuarioVO.getEmpresa().getEndereco().getUf());
+		// }
+		// if (usuarioVO.getEmpresa().getEndereco().getTipoLogradouro() != null)
+		// {
+		// endereco.setLogradouro(new Logradouro());
+		// endereco.getLogradouro().setCodigo(
+		// usuarioVO.getEmpresa().getEndereco()
+		// .getTipoLogradouro());
+		// }
+		// }
+//		return null;
+//	}
+
+//	private Empresa populaEmpresa(UsuarioVO usuarioVO) {
+//		final Empresa empresa = new Empresa();
+//		if (usuarioVO != null && usuarioVO.getEmpresa() != null) {
+//			empresa.setCnpj(usuarioVO.getEmpresa().getCnpj());
+//			empresa.setDataFundacao(usuarioVO.getEmpresa().getDataFundacao());
+//			empresa.setNomeFantasia(usuarioVO.getEmpresa().getNomeFantasia());
+//			empresa.setNomeTitular(usuarioVO.getEmpresa().getNomeTitular());
+//		}
+//		return empresa;
+//	}
+
+	private Usuario populaUsuario(UsuarioVO usuarioVO) {
+		final Usuario usuario = new Usuario();
+		if (usuarioVO != null) {
+			usuario.setCpf(usuarioVO.getNumeroCpf());
+			usuario.setNome(usuarioVO.getNome());
+			usuario.setLogin(usuarioVO.getLogin());
+			usuario.setDataNascimento(usuarioVO.getDataNascimento());
+		}
+		return usuario;
+	}
+
+	@Override
+	public boolean verificaExistenciaLogin(String login)
+			throws PersistenciaException {
+
+		boolean retorno = false;
+
+		try {
+
+			final String queryString = "SELECT u.login FROM Usuario u "
+					+ "WHERE u.login = :login";
+			Query query = entityManager.createQuery(queryString);
+			query.setParameter("login", login);
+			final String resultado = (String) query.getSingleResult();
+			System.out.println(resultado);
+			if (resultado != null) {
+				retorno = true;
+			}
+
+		} catch (NoResultException e) {
+			retorno = false;
+		} catch (Exception e) {
+			// TODO TRATAR COM log4J
+			System.out.println(e.getMessage());
+		}
+		return retorno;
+
+	}
+
+}

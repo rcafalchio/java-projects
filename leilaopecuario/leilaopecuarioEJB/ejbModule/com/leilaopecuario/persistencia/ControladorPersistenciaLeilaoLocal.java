@@ -1,0 +1,83 @@
+package com.leilaopecuario.persistencia;
+
+import java.util.List;
+
+import javax.ejb.Local;
+
+import com.leilaopecuario.entidades.InformacoesFotos;
+import com.leilaopecuario.entidades.Leilao;
+import com.leilaopecuario.entidades.Vacina;
+import com.leilaopecuario.exception.PersistenciaException;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@Local
+public interface ControladorPersistenciaLeilaoLocal {
+
+	/**
+	 * Insere um leilão na base
+	 * 
+	 * @param leilaoVO
+	 * @throws PersistenciaException
+	 */
+	public void inserirLeilao(LeilaoVO leilaoVO) throws PersistenciaException;
+
+	/**
+	 * Recupera todos os leiloes
+	 * 
+	 * @return lista de leilões
+	 * @throws PersistenciaException
+	 */
+	public List<Leilao> buscarLeiloes() throws PersistenciaException;
+
+	/**
+	 * 
+	 * @param leilaoVO
+	 * @throws PersistenciaException
+	 */
+	public void atualizarLeilao(LeilaoVO leilaoVO) throws PersistenciaException;
+
+	/**
+	 * Recupera o caminho das fotos do leilão, e também qual a foto principal
+	 * 
+	 * @param codigo
+	 * @return
+	 * @throws PersistenciaException
+	 */
+	public InformacoesFotos obtemCaminhoFoto(Integer codigo) throws PersistenciaException;
+	
+	/**
+	 * Recupera todas as vacinas cadastradas
+	 * 
+	 * @return Lista de vacinas
+	 * @throws PersistenciaException
+	 */
+	public List<Vacina> obtemTodasVacinas() throws PersistenciaException;
+
+	/**
+	 * Recupera a vacina
+	 * 
+	 * @param nome
+	 * @return Vacina
+	 * @throws PersistenciaException
+	 */
+	public Vacina obtemVacinaPorNome(String nome) throws PersistenciaException;
+
+	/**
+	 * Recupera o Leilao por código
+	 * @param codigoLeilao
+	 * @return leilao
+	 * @throws PersistenciaException 
+	 */
+	public Leilao recuperaLeilaoPorCodigo(Integer codigoLeilao) throws PersistenciaException;
+
+	/**
+	 * Recupera os leilões cadastrados pelo usuário
+	 * 
+	 * @param codigo
+	 * @return lista de leilões do usuário
+	 * @throws PersistenciaException
+	 */
+	public List<Leilao> obtemLeiloesPorUsuario(Integer codigo) throws PersistenciaException;
+
+
+}

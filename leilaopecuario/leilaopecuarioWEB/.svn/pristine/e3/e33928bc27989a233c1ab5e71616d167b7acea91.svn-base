@@ -1,0 +1,45 @@
+package br.com.leilaopecuario.bean;
+
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+
+import org.apache.log4j.Logger;
+
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.negocio.GerenciadorLeilaoLocal;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@ManagedBean
+public class PesquisarLeilaoBean {
+
+	private final static Logger LOGGER = Logger
+			.getLogger(PesquisarLeilaoBean.class);
+	
+	private List<LeilaoVO> leiloes;  
+	
+	@EJB
+	private GerenciadorLeilaoLocal gerenciadorLeilao;
+	
+	@PostConstruct  
+    public void init() {  
+		
+		try {
+			leiloes = gerenciadorLeilao.recuperaLeiloesAtivos();
+		} catch (LeilaoException e) {
+			LOGGER.error("Problema ao recuperar os leilões ativos!");
+		}
+		
+    }
+
+	public List<LeilaoVO> getLeiloes() {
+		return leiloes;
+	}
+
+	public void setLeiloes(List<LeilaoVO> leiloes) {
+		this.leiloes = leiloes;
+	}  
+	
+}

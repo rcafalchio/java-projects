@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?scenebuilder-background-color 0x708090ff?>
+<?scenebuilder-stylesheet ../styles/style_tecway.css?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="738.0" prefHeight="768.0" prefWidth="1024.0" xmlns:fx="http://javafx.com/fxml" fx:controller="br.com.tecway.gerenciadorloja.fx.controller.ConsultaVendasController">
+  <center>
+    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="1024.0">
+      <children>
+        <HBox alignment="CENTER" prefHeight="36.0" prefWidth="1024.0">
+          <children>
+            <Label styleClass="label-padrao-titulo" text="Selecione os Vendedores:" />
+          </children>
+        </HBox>
+        <HBox alignment="TOP_CENTER" prefHeight="164.0" prefWidth="1024.0">
+          <children>
+            <ListView fx:id="vendedoresListView" prefHeight="200.0" prefWidth="350.0">
+              <HBox.margin>
+                <Insets right="10.0" />
+              </HBox.margin>
+            </ListView>
+            <VBox alignment="CENTER" minWidth="34.0" prefHeight="164.0" prefWidth="67.0">
+              <children>
+                <ToolBar minWidth="40.0" orientation="VERTICAL" prefHeight="70.0" prefWidth="47.0">
+                  <items>
+                    <Button mnemonicParsing="false" onAction="#adiconarVendedor" text="&gt;&gt;" />
+                    <Button mnemonicParsing="false" onAction="#removerVendedor" text="&lt;&lt;" />
+                  </items>
+                </ToolBar>
+              </children>
+            </VBox>
+            <ListView fx:id="selecionadosListView" prefHeight="200.0" prefWidth="350.0">
+              <HBox.margin>
+                <Insets left="10.0" fx:id="x4" />
+              </HBox.margin>
+            </ListView>
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="70.0" prefWidth="1024.0">
+          <children>
+            <GridPane prefHeight="70.0" prefWidth="764.0">
+              <children>
+                <Label styleClass="label-padrao" text="Data Inicial:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label styleClass="label-padrao" text="Data Final:" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                  <GridPane.margin>
+                    <Insets left="10.0" fx:id="x4" />
+                  </GridPane.margin>
+                </Label>
+                <TextField fx:id="dataInicialText" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                  <GridPane.margin>
+                    <Insets left="10.0" fx:id="x5" />
+                  </GridPane.margin>
+                </TextField>
+                <!--<DateTextField fx:id="dataInicialText" prefWidth="200.0" GridPane.columnIndex="1" GridPane.margin="$x5" GridPane.rowIndex="0" />-->
+                <TextField fx:id="dataFinalText" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                  <GridPane.margin>
+                    <Insets left="10.0" fx:id="x6" />
+                  </GridPane.margin>
+                </TextField>
+                <!--<DateTextField fx:id="dataFinalText" prefWidth="200.0" GridPane.columnIndex="3" GridPane.margin="$x5" GridPane.rowIndex="0" />-->
+                <Button mnemonicParsing="false" onAction="#pesquisar" prefWidth="82.0" text="Pesquisar" GridPane.columnIndex="4" GridPane.rowIndex="0">
+                  <GridPane.margin>
+                    <Insets left="20.0" />
+                  </GridPane.margin>
+                </Button>
+                <CheckBox mnemonicParsing="false" text="Agrupar vendas por data" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+              </children>
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="99.0" minWidth="10.0" prefWidth="99.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="128.0" />
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="10.0" prefWidth="135.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="135.0" minWidth="10.0" prefWidth="118.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="152.0" minWidth="10.0" prefWidth="152.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+              <HBox.margin>
+                <Insets />
+              </HBox.margin>
+            </GridPane>
+          </children>
+        </HBox>
+        <HBox id="estoqueHbox" alignment="TOP_CENTER" prefHeight="389.0" prefWidth="1024.0">
+          <children>
+            <VBox fx:id="estoqueVBox" alignment="CENTER" prefHeight="247.0" prefWidth="962.0">
+              <children>
+                <Accordion fx:id="vendasAccordion" prefHeight="473.0">
+                  <expandedPane>
+                    <TitledPane fx:id="x2" animated="false" prefHeight="283.0" prefWidth="963.0" text="Vendas">
+                      <content>
+                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                          <children>
+                            <HBox prefHeight="403.0" prefWidth="959.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <children>
+                                <TableView fx:id="vendasTableView" onMouseClicked="#buscarProdutos" prefHeight="403.0" prefWidth="963.0" />
+                              </children>
+                            </HBox>
+                          </children>
+                        </AnchorPane>
+                      </content>
+                    </TitledPane>
+                  </expandedPane>
+                  <panes>
+                    <fx:reference source="x2" />
+                    <TitledPane fx:id="x1" animated="false" text="Trocas">
+                      <content>
+                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                          <children>
+                            <HBox prefHeight="403.0" prefWidth="959.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <children>
+                                <TableView prefHeight="403.0" prefWidth="963.0" />
+                              </children>
+                            </HBox>
+                          </children>
+                        </AnchorPane>
+                      </content>
+                    </TitledPane>
+                    <TitledPane fx:id="x3" animated="false" text="Devoluções">
+                      <content>
+                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                          <children>
+                            <HBox prefHeight="403.0" prefWidth="959.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <children>
+                                <TableView prefHeight="192.0" prefWidth="958.0" />
+                              </children>
+                            </HBox>
+                          </children>
+                        </AnchorPane>
+                      </content>
+                    </TitledPane>
+                  </panes>
+                </Accordion>
+              </children>
+            </VBox>
+          </children>
+        </HBox>
+      </children>
+    </VBox>
+  </center>
+  <top>
+    <HBox alignment="CENTER" prefHeight="86.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
+      <children>
+        <Label styleClass="label-titulo" text="Consulta de Vendas" />
+      </children>
+    </HBox>
+  </top>
+</BorderPane>

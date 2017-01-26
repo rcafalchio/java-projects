@@ -1,0 +1,94 @@
+package com.leilaopecuario.entidades;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "leilao")
+public class Leilao {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "codigo_leilao")
+	private Integer codigo;
+
+	@Column(name = "titulo")
+	private String titulo;
+
+	@Column(name = "descricao")
+	private String descricao;
+
+	@Column(name = "formapagamento")
+	private Long formaPagamento;
+
+//	@Column(name = "cnpj")
+//	private Long cnpj;
+
+//	@Column(name = "data_nascimento")
+//	private Date dataNascimento;
+
+	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+//		result = prime * result + ((cnpj == null) ? 0 : cnpj.hashCode());
+//		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+//		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
+//		result = prime * result
+//				+ ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
+//		result = prime * result + ((login == null) ? 0 : login.hashCode());
+//		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		return result;
+	}
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Long getFormaPagamento() {
+		return formaPagamento;
+	}
+
+	public void setFormaPagamento(Long formaPagamento) {
+		this.formaPagamento = formaPagamento;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Leilao other = (Leilao) obj;
+		
+		return true;
+	}
+}

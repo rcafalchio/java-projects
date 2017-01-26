@@ -1,0 +1,27 @@
+package com.leilaopecuario.persistencia;
+
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import com.leilaopecuario.entidades.Usuario;
+import com.leilaopecuario.vo.UsuarioVO;
+
+@Stateless
+public class ControladorPersistenciaUsuario implements
+		ControladorPersistenciaUsuarioLocal {
+
+	@PersistenceContext(name = "leilao")
+	private EntityManager entityManager;
+
+	@Override
+	public void inserirUsuario(final UsuarioVO usuarioVO) {
+		final Usuario usuario = new Usuario();
+		usuario.setCpf(usuarioVO.getNumeroCpf());
+		usuario.setNome(usuarioVO.getNome());
+		usuario.setLogin(usuarioVO.getLogin());
+		usuario.setDataNascimento(usuarioVO.getDataNascimento());
+		entityManager.persist(usuario);
+	}
+
+}

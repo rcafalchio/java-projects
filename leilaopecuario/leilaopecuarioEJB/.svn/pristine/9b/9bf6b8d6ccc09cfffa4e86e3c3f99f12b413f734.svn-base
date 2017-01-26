@@ -1,0 +1,55 @@
+package com.leilaopecuario.entidades;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "telefone")
+public class Telefone {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer codigo;
+	private Short ddd;
+	private Integer numero;
+
+	@ManyToOne
+	private Contato contato;
+
+	public Short getDdd() {
+		return ddd;
+	}
+
+	public void setDdd(Short ddd) {
+		this.ddd = ddd;
+	}
+
+	public Integer getNumero() {
+		return numero;
+	}
+
+	public void setNumero(Integer numero) {
+		this.numero = numero;
+	}
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+
+	public Contato getContato() {
+		return contato;
+	}
+
+	public void setContato(Contato contato) {
+		this.contato = contato;
+	}
+
+}

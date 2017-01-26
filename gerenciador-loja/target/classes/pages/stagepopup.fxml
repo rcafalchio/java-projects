@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+
+<BorderPane id="stagePopup" styleClass="stage-popup" xmlns:fx="http://javafx.com/fxml">
+	<top>
+		<HBox spacing="5" styleClass="stage-popup-bar" alignment="CENTER_RIGHT">
+			<children>
+				<StackPane alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+					<children>
+						<Label id="titleLabel" styleClass="stage-popup-bar-label" />
+					</children>
+				</StackPane>
+			</children>
+			<children>
+				<Label id="minimizeLabel" styleClass="stage-popup-bar-button">
+					<graphic>
+						<ImageView>
+							<image>
+								<Image url="/images/minimize.png"/>
+							</image>
+						</ImageView>
+					</graphic>
+				</Label>
+			</children>
+			<children>
+				<Label id="maximizeLabel" styleClass="stage-popup-bar-button">
+					<graphic>
+						<ImageView>
+							<image>
+								<Image url="/images/maximize.png"/>
+							</image>
+						</ImageView>
+					</graphic>
+				</Label>
+				<Label id="restoreLabel" styleClass="stage-popup-bar-button">
+					<graphic>
+						<ImageView>
+							<image>
+								<Image url="/images/restore.png"/>
+							</image>
+						</ImageView>
+					</graphic>
+				</Label>
+			</children>
+			<children>
+				<Label id="closeLabel" styleClass="stage-popup-bar-button">
+					<graphic>
+						<ImageView>
+							<image>
+								<Image url="/images/close.png"/>
+							</image>
+						</ImageView>
+					</graphic>
+				</Label>
+			</children>
+		</HBox>
+	</top>
+	<left>
+		<HBox styleClass="stage-popup-left" />
+	</left>
+	<right>
+		<HBox styleClass="stage-popup-right" />
+	</right>
+	<bottom>
+		<HBox styleClass="stage-popup-bottom" alignment="BOTTOM_RIGHT">
+			<children>
+				<Label id="resizeLabel" styleClass="stage-popup-resizable" visible="false">
+					<graphic>
+						<ImageView fitWidth="14" fitHeight="13">
+							<image>
+								<Image url="/images/resizable.png"/>
+							</image>
+						</ImageView>
+					</graphic>
+				</Label>
+			</children>
+		</HBox>
+	</bottom>
+</BorderPane>

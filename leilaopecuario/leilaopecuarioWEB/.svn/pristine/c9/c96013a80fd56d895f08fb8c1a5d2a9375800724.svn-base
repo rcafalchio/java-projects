@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<h:body>
+	<h:form>
+		<p:menubar autoSubmenuDisplay="true">
+			<p:submenu label="Cadastro" icon="ui-icon-pencil">
+				<p:menuitem value="Usuário" url="../publicas/cadastrousuario.xhtml" />
+				<p:menuitem value="Leilão" url="../protegidas/cadastroleilao.xhtml" />
+			</p:submenu>
+			<p:submenu label="Meus leilões" icon="ui-icon-cart">
+				<p:menuitem value="Compra" />
+				<p:menuitem value="Venda" />
+			</p:submenu>
+			<p:menuitem value="Home" url="../publicas/index.xhtml"
+				icon="ui-icon-home" />
+		</p:menubar>
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,20 @@
+package com.leilaopecuario.negocio;
+
+import javax.ejb.Local;
+
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.vo.UsuarioVO;
+
+@Local
+public interface GerenciadorUsuarioLocal {
+
+	/**
+	 * Efetua as regras e persiste o usuário
+	 * 
+	 * @param usuarioVO
+	 * @return
+	 * @throws LeilaoException
+	 */
+	public String gravaUsuario(UsuarioVO usuarioVO) throws LeilaoException;
+
+}

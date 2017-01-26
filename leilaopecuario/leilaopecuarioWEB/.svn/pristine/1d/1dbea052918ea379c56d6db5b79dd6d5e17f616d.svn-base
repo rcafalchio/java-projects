@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:outputScript name="locale-primefaces.js" library="js" />
+
+<ui:composition template="/layout/layout.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form enctype="multipart/form-data" id="envia">
+
+			<p:messages errorClass="error" id="msg_cadastro" />
+
+			<p:growl id="msg_foto" showDetail="true" sticky="true" />
+
+			<p:wizard widgetVar="wiz" nextLabel="Próximo" backLabel="Anterior"
+				flowListener="#{controladorLeilaoBean.onFlowProcess}">
+
+				<!-- ################################### -->
+				<!-- 		Cadatro de Leilão 			 -->
+				<!-- ################################### -->
+				<p:tab id="leilao" title="Leilão">
+					<p:panel header="Dados do Leilão">
+
+						<p:messages errorClass="error" />
+
+						<h:panelGrid columns="2" columnClasses="label, value"
+							styleClass="grid">
+
+							<h:outputText value="Título:" for="titulo" />
+							<p:inputText id="titulo" required="true"
+								value="#{controladorLeilaoBean.leilaoVO.titulo}"
+								requiredMessage="É necessário preencher o titulo" />
+
+							<h:outputText value="Descrição:" for="descricao" />
+							<p:inputText id="descricao" required="true"
+								value="#{controladorLeilaoBean.leilaoVO.descricao}"
+								requiredMessage="É necessário preencher a descrição" />
+
+							<h:outputText value="Lance Inicial:" for="lanceinicial" />
+							<p:inputText id="lanceinicial" required="true"
+								value="#{controladorLeilaoBean.leilaoVO.lanceInicial}"
+								requiredMessage="É necessário preencher o lance inicial"/>
+
+							<h:outputText value="Data final:" for="data_final" />
+							<p:calendar id="data_final" locale="pt" pattern="dd/MM/yyyy"
+								required="true"
+								value="#{controladorLeilaoBean.leilaoVO.dataEHoraFinal}"
+								requiredMessage="É necessário preencher a data final do leilão" />
+
+						</h:panelGrid>
+					</p:panel>
+
+				</p:tab>
+
+				<!-- ################################### -->
+				<!-- 		Animal Leilao   			 -->
+				<!-- ################################### -->
+				<p:tab id="animal" title="Animal">
+					<p:panel header="Dados Animal Leilão">
+
+						<p:messages errorClass="error" />
+
+						<h:panelGrid columns="2" columnClasses="label, value"
+							styleClass="grid">
+
+							<h:outputText value="Idade(Meses):" for="idade_em_meses" />
+							<p:inputMask id="idade_em_meses" required="false"
+								value="#{controladorLeilaoBean.leilaoVO.animalVO.idadeMeses}"
+								mask=" 999" />
+
+							<h:outputText value="Localidade Criação:"
+								for="localidade_de_criacao" />
+							<p:inputText id="localidade_de_criacao"
+								value="#{controladorLeilaoBean.leilaoVO.animalVO.localidadeCriacao}" />
+
+							<h:outputText value="Raça:" for="raca" />
+							<p:inputText id="raca"
+								value="#{controladorLeilaoBean.leilaoVO.animalVO.raca}" />
+
+							<h:outputText value="Vacinas:" for="vacinas" />
+							<p:inputText id="vacinas"
+								value="#{controladorLeilaoBean.leilaoVO.animalVO.raca}" />
+
+						</h:panelGrid>
+					</p:panel>
+					<p:commandButton value="Cadastrar" update="msg_cadastro"
+						action="#{controladorLeilaoBean.cadastraLeilao()}" />
+				</p:tab>
+
+
+			</p:wizard>
+
+			<h:outputLabel>Enviar Fotos: </h:outputLabel>
+
+			<p:fileUpload id="upload" update="fotos msg_foto"
+				fileUploadListener="#{controladorLeilaoBean.fileUploadAction}"
+				auto="true" label="Escolha a Foto (extensão: jpeg, pnj, gif)"
+				allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+				invalidFileMessage="Tipo de arquivo não permitido" rendered="true" />
+
+			<p:outputPanel id="fotos" rendered="true">
+
+				<p:dataTable id="fotosTable"
+					value="#{controladorLeilaoBean.listaDeFotos}" var="foto" rowKey="#{foto.fileName}">
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Arquivo" />
+						</f:facet>
+						<h:outputText value="#{foto.fileName}" />
+					</p:column>
+
+ 					<p:column selectionMode="single" style="width:18px" >
+ 						<f:facet name="header">
+							<h:outputText value="foto de capa" />
+						</f:facet>
+ 					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Retirar" />
+						</f:facet>
+						<p:commandLink id="command" value="Remover" update=":envia:fotos"
+							process=":envia:fotos">
+							<p:collector value="#{foto}"
+								removeFrom="#{controladorLeilaoBean.listaDeFotos}" />
+						</p:commandLink>
+					</p:column>
+
+				</p:dataTable>
+
+			</p:outputPanel>
+
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

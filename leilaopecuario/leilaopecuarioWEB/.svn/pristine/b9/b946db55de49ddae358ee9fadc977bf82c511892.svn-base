@@ -1,0 +1,118 @@
+package br.com.leilaopecuario.util;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+
+import org.apache.log4j.Logger;
+
+public class LeilaoWebHelper {
+
+	private final static Logger LOGGER = Logger.getLogger(LeilaoWebHelper.class);
+
+	public static void gravarFotos(String localFotos, String localGravar) {
+
+		try {
+
+			final File diretorioGravarFotos = new File(localGravar);
+			final File diretorioFotos = new File(localFotos);
+
+			LeilaoWebHelper.copyAll(diretorioFotos, diretorioGravarFotos);
+			
+		} catch (Exception e) {
+			LOGGER.error(e);
+		}
+
+	}
+
+	public static void copyFile(File source, File destination) throws IOException {
+
+		if (!source.exists()) {
+			return;
+		}
+
+		if (destination.isDirectory() && !destination.exists()) {
+			destination.mkdir();
+		} else if (destination.exists() && !destination.isDirectory()) {
+			destination.delete();
+		}
+
+		FileChannel sourceChannel = null;
+		FileChannel destinationChannel = null;
+
+		try {
+			sourceChannel = new FileInputStream(source).getChannel();
+			destinationChannel = new FileOutputStream(destination).getChannel();
+			sourceChannel.transferTo(0, sourceChannel.size(), destinationChannel);
+		} finally {
+			if (sourceChannel != null && sourceChannel.isOpen())
+				sourceChannel.close();
+			if (destinationChannel != null && destinationChannel.isOpen())
+				destinationChannel.close();
+		}
+	}
+
+	public static void copyAll(File origem, File destino) throws IOException {
+
+		FileChannel oriChannel = null;
+		FileChannel destChannel = null;
+
+		try {
+
+			if (!destino.exists())
+
+				destino.mkdir();
+
+			File[] listaDeArquivos = origem.listFiles();
+
+			for (File file : listaDeArquivos) {
+
+				if (file.isDirectory()) {
+					String novoDiretorioString = destino.getAbsolutePath() + "\\\\" + file.getName();
+					File novoDiretorio = new File(novoDiretorioString);
+					novoDiretorio.mkdirs();
+					copyAll(file, novoDiretorio);
+				} else {
+					file.setLastModified(origem.lastModified());
+
+					// Cria channel na origem
+					oriChannel = new FileInputStream(file.getPath()).getChannel();
+
+					// Cria channel no destino
+					destChannel = new FileOutputStream(destino + "\\" + file.getName()).getChannel();
+
+					// Copia conteúdo da origem no destino
+					destChannel.transferFrom(oriChannel, 0, oriChannel.size());
+
+					// Fecha channels
+					oriChannel.close();
+					destChannel.close();
+				}
+
+			}
+
+//			Runtime.getRuntime().exec("explorer " + destino.getAbsolutePath());
+
+			LOGGER.info("Sincronização concluída com sucesso!");
+
+		} catch (IOException e) {
+
+			LOGGER.error(e);
+
+		} finally {
+
+			if (oriChannel != null && oriChannel.isOpen()) {
+
+				oriChannel.close();
+			}
+
+			if (destChannel != null && destChannel.isOpen()) {
+
+				destChannel.close();
+			}
+
+		}
+	}
+}

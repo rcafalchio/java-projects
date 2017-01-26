@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/layout/layout2.xhtml">
+
+	<ui:define name="conteudo">
+	
+		<p:growl id="msg_cadastro" showDetail="true" sticky="true" />
+
+		<p:panel header="Bem vindo!">
+			<br />
+			<h:outputText value="Bem vindo ao site Leilão Pecuário Web." />
+			<h:outputText
+				value="Este sistema tem como objetivo facilitar a compra e venda de animais através de leilões." />
+			<br />
+		</p:panel>
+
+	</ui:define>
+</ui:composition>
+</html>

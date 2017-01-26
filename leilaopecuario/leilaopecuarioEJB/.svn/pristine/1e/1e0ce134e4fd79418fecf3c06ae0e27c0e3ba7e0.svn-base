@@ -1,0 +1,128 @@
+package com.leilaopecuario.negocio;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.log4j.Logger;
+
+import com.leilaopecuario.entidades.Leilao;
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.exception.PersistenciaException;
+import com.leilaopecuario.persistencia.ControladorPersistenciaLeilaoLocal;
+import com.leilaopecuario.vo.AnimalVO;
+import com.leilaopecuario.vo.InformacoesLancesVO;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@Stateless
+public class GerenciadorLeilao implements GerenciadorLeilaoLocal {
+
+	private final static Logger LOGGER = Logger
+			.getLogger(GerenciadorLeilao.class);
+
+	@EJB
+	private ControladorPersistenciaLeilaoLocal controladorPersistenciaLeilao;
+
+	@Override
+	public Integer gravaLeilao(LeilaoVO leilaoVO) {
+
+		String fraseErro = null;
+		Integer retorno = null;
+		try {
+
+			if (fraseErro == null) {
+
+				retorno = controladorPersistenciaLeilao.inserirLeilao(leilaoVO);
+
+			}
+		} catch (Exception e) {
+			LOGGER.error("Ocorreu um problema no método gravaUsuario", e);
+			fraseErro = "Problema ao gravar";
+		}
+
+		return retorno;
+	}
+
+	@Override
+	public List<LeilaoVO> recuperaLeiloesAtivos() throws LeilaoException {
+
+		List<LeilaoVO> listaLeiloes = null;
+
+		try {
+			final List<Leilao> leiloes = controladorPersistenciaLeilao
+					.buscarLeiloesAtivos();
+			listaLeiloes = new ArrayList<LeilaoVO>();
+			for (Leilao leilao : leiloes) {
+				final LeilaoVO leilaoVO = new LeilaoVO();
+				leilaoVO.setCodigo(leilao.getCodigo());
+				leilaoVO.setDataCadastro(leilao.getDataCadastro());
+				leilaoVO.setDescricao(leilao.getDescricao());
+				leilaoVO.setTitulo(leilao.getTitulo());
+				// leilaoVO.setCaminhoFotos(leilao.getCaminhoFotos().get(0).toString());
+				leilaoVO.setDataEHoraFinal(leilao.getDataEHoraFinal());
+				// preenche as informações do lance
+				if (leilao.getInformacoesLanceLeilao() != null) {
+					leilaoVO.setInformacoesLances(new InformacoesLancesVO());
+					leilaoVO.getInformacoesLances().setLanceAtual(
+							leilao.getInformacoesLanceLeilao().getLanceAtual());
+					leilaoVO.getInformacoesLances()
+					.setQuantidadeLancesEfetuados(
+							leilao.getInformacoesLanceLeilao()
+							.getQuantidadeLancesEfetuados());
+				} else {
+					leilaoVO.getInformacoesLances().setLanceAtual(
+							Double.valueOf("0"));
+					leilaoVO.getInformacoesLances()
+					.setQuantidadeLancesEfetuados(0);
+				}
+				if (leilao.getAnimal() != null) {
+					leilaoVO.setAnimalVO(new AnimalVO());
+					PropertyUtils.copyProperties(leilaoVO.getAnimalVO(),
+							leilao.getAnimal());
+				}
+				listaLeiloes.add(leilaoVO);
+			}
+		} catch (Exception e) {
+			LOGGER.error("Ocorreu um erro no método recuperaLeiloesAtivos", e);
+		}
+
+		return listaLeiloes;
+
+	}
+
+	@Override
+	public List<String> recuperaFotosLeilao(Integer codigo) {
+
+		final List<String> listaFotos = new ArrayList<String>();
+
+		// try {
+		// final List<CaminhoFotos> listaCaminhoFotos =
+		// controladorPersistenciaLeilao.obtemCaminhoFotos(codigo);
+		// for (CaminhoFotos caminhoFotos : listaCaminhoFotos) {
+		// listaFotos.add(String.valueOf(codigo).concat(caminhoFotos.getCaminho()));
+		// }
+		// } catch (PersistenciaException e) {
+		// LOGGER.error("Ocorreu um erro no método recuperaFotosLeilao", e);
+		// }
+		listaFotos.add("/imagens/leilao/1/fotos/boi1.jpg");
+		listaFotos.add("/imagens/leilao/1/fotos/boi2.jpg");
+
+		return listaFotos;
+	}
+
+	@Override
+	public void atualizarLeilao(LeilaoVO leilaoVO) {
+		
+		try {
+			controladorPersistenciaLeilao.atualizarLeilao(leilaoVO);
+		} catch (PersistenciaException e) {
+			
+			e.printStackTrace();
+		}
+		
+		
+	}
+}

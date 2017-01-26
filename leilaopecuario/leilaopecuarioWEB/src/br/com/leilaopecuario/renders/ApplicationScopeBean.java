@@ -1,0 +1,18 @@
+package br.com.leilaopecuario.renders;
+
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+
+@ManagedBean
+@ApplicationScoped
+public class ApplicationScopeBean {
+
+	public void preRenderView() {
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+				.getExternalContext().getSession(true);
+		session.setMaxInactiveInterval(30000);
+	}
+
+}

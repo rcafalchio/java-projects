@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:outputScript name="locale-primefaces.js" library="js" />
+
+<ui:composition template="/layout/layout.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="form">
+
+			<p:messages errorClass="error" id="msg_cadastro" />
+
+			<p:wizard widgetVar="wiz" nextLabel="Próximo" backLabel="Anterior"
+				flowListener="#{controladorUsuarioBean.onFlowProcess}">
+
+				<!-- ################################### -->
+				<!-- 		Cadatro do Usuário 			 -->
+				<!-- ################################### -->
+				<p:tab id="usuario" title="Usuario">
+					<p:panel header="Dados do usuário">
+
+						<p:messages errorClass="error" />
+
+						<h:panelGrid columns="2" columnClasses="label, value"
+							styleClass="grid">
+
+							<h:outputText value="Nome:" for="nome" />
+							<p:inputText id="nome" required="true"
+								value="#{controladorUsuarioBean.usuario.nome}" />
+
+							<h:outputText value="Login:" for="login" />
+							<p:inputText id="login" required="true"
+								value="#{controladorUsuarioBean.usuario.login}" />
+
+							<h:outputText value="CPF:" for="cpf" />
+							<p:inputMask id="cpf"
+								value="#{controladorUsuarioBean.usuario.numeroCpf}"
+								mask="999.999.999-99"
+								requiredMessage="Campo obrigatório não preenchido"
+								converter="convertInput" />
+
+							<h:outputText value="Data de Nascimento:" for="data_nascimento" />
+							<p:calendar id="data_nascimento" locale="pt" pattern="dd/MM/yyyy"
+								value="#{controladorUsuarioBean.usuario.dataNascimento}" />
+
+						</h:panelGrid>
+					</p:panel>
+				</p:tab>
+
+				<!-- ################################### -->
+				<!-- 		Contatos do Usuário 			 -->
+				<!-- ################################### -->
+				<p:tab id="contato" title="Contato">
+					<p:panel header="Contatos do usuário">
+
+						<p:messages errorClass="error" />
+
+						<h:panelGrid columns="2" columnClasses="label, value"
+							styleClass="grid">
+
+							<h:outputText value="Email:" for="email" />
+							<p:inputText id="email"
+								value="#{controladorUsuarioBean.usuario.contato.email}" />
+
+							<h:outputText value="MSN:" for="msn" />
+							<p:inputText id="msn"
+								value="#{controladorUsuarioBean.usuario.contato.msn}" />
+
+							<h:outputText value="Site:" for="site" />
+							<p:inputText id="site"
+								value="#{controladorUsuarioBean.usuario.contato.site}" />
+
+							<h:outputText value="Skype:" for="skype" />
+							<p:inputText id="skype"
+								value="#{controladorUsuarioBean.usuario.contato.skype}" />
+
+						</h:panelGrid>
+					</p:panel>
+				</p:tab>
+
+				<!-- ################################### -->
+				<!-- 		Telefones do Usuário 			 -->
+				<!-- ################################### -->
+				<p:tab id="telefones_tab" title="Telefones">
+
+					<p:growl id="msgs" />
+
+					<p:panel header="Telefones do usuário">
+						<h:panelGrid columns="2" id="grid">
+							<h:outputLabel value="DDD: " for="ddd" />
+							<p:inputMask id="ddd"
+								value="#{controladorUsuarioBean.telefone.ddd}" mask="(99)"
+								converter="convertInput" />
+
+							<h:outputLabel value="Número do Telefone: " for="numeroTelefone"></h:outputLabel>
+							<p:inputMask id="numeroTelefone"
+								value="#{controladorUsuarioBean.telefone.numero}"
+								mask="9999-9999" converter="convertInput" />
+
+							<p:commandButton value="Limpar" type="reset" />
+							<p:commandButton id="btn_add" value="Adicionar"
+								update="telefones msgs @parent"
+								action="#{controladorUsuarioBean.reinit}">
+								<p:collector value="#{controladorUsuarioBean.telefone}"
+									addTo="#{controladorUsuarioBean.usuario.contato.telefones}" />
+							</p:commandButton>
+						</h:panelGrid>
+					</p:panel>
+
+					<p:outputPanel id="telefones">
+						<p:dataTable id="telefonesTable"
+							value="#{controladorUsuarioBean.usuario.contato.telefones}"
+							var="telefone">
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="DDD" />
+								</f:facet>
+								<h:outputText value="#{telefone.ddd}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Número Telefone" />
+								</f:facet>
+								<h:outputText value="#{telefone.numero}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Retirar" />
+								</f:facet>
+								<p:commandLink id="command" value="Remover"
+									update=":form:telefones" process=":form:telefones">
+									<p:collector value="#{telefone}"
+										removeFrom="#{controladorUsuarioBean.usuario.contato.telefones}" />
+								</p:commandLink>
+							</p:column>
+
+						</p:dataTable>
+					</p:outputPanel>
+				</p:tab>
+
+				<!-- ################################### -->
+				<!-- 		Cadatro da Empresa 			 -->
+				<!-- ################################### -->
+
+				<p:tab id="empresa" title="Empresa">
+					<p:panel header="Dados da empresa">
+
+						<h:panelGrid columns="2" columnClasses="label, value"
+							styleClass="grid">
+
+							<h:outputText value="Nome Fantasia:" for="nome_fantasia" />
+							<p:inputText id="nome_fantasia" required="false"
+								value="#{controladorUsuarioBean.usuario.empresa.nomeFantasia}" />
+
+							<h:outputText value="Nome do titular:" for="nome_titular" />
+							<p:inputText id="nome_titular" required="false"
+								value="#{controladorUsuarioBean.usuario.empresa.nomeTitular}" />
+
+							<h:outputText value="CNPJ:" for="cnpj" />
+							<p:inputMask id="cnpj"
+								value="#{controladorUsuarioBean.usuario.empresa.cnpj}"
+								mask=" 99.999.999/9999-99" converter="convertInput" />
+
+							<h:outputText value="Data de fundação" for="data_fundacao" />
+							<p:calendar id="data_fundacao" locale="pt" pattern="dd/MM/yyyy"
+								value="#{controladorUsuarioBean.usuario.empresa.dataFundacao}" />
+
+						</h:panelGrid>
+
+					</p:panel>
+				</p:tab>
+
+				<!-- ################################### -->
+				<!-- 		Cadatro da Endereço 			 -->
+				<!-- ################################### -->
+
+				<p:tab id="endereco" title="Endereço">
+					<p:panel header="Endereço onde se localiza o animal">
+
+						<h:panelGrid columns="2" columnClasses="label, value"
+							styleClass="grid">
+
+							<h:outputText value="Logradouro:" for="logradouro" />
+							<p:inputText id="logradouro" required="false"
+								value="#{controladorUsuarioBean.usuario.endereco.logradouro}" />
+
+							<h:outputText value="Nome do bairro:" for="bairro" />
+							<p:inputText id="bairro" required="false"
+								value="#{controladorUsuarioBean.usuario.endereco.bairro}" />
+
+							<h:outputText value="Nome da cidade:" for="cidade" />
+							<p:inputText id="cidade" required="false"
+								value="#{controladorUsuarioBean.usuario.endereco.cidade}" />
+
+							<h:outputText value="Nome da CEP:" for="cep" />
+							<p:inputMask id="cep"
+								value="#{controladorUsuarioBean.usuario.endereco.cep}"
+								mask="99999-999"
+								requiredMessage="Campo obrigatório não preenchido"
+								converter="convertInput" />
+
+							<h:outputText value="Estado:" for="estado" />
+							<p:selectOneMenu id="estado"
+								value="#{controladorUsuarioBean.usuario.endereco.uf}">
+								<f:selectItem itemLabel="Selecione o estado" itemValue="" />
+								<f:selectItems value="#{controladorUsuarioBean.listaEstados}"
+									var="est" itemLabel="#{est.uf}" itemValue="#{est.uf}" />
+							</p:selectOneMenu>
+
+						</h:panelGrid>
+
+					</p:panel>
+					<p:commandButton value="Cadastrar" update="msg_cadastro"
+						action="#{controladorUsuarioBean.cadastraUsuario}" />
+				</p:tab>
+
+			</p:wizard>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

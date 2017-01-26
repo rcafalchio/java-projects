@@ -1,0 +1,121 @@
+package br.com.leilaopecuario.bean;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.log4j.Logger;
+import org.primefaces.event.FlowEvent;
+
+import com.leilaopecuario.constantes.ConstantesMensagens;
+import com.leilaopecuario.entidades.Estado;
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.negocio.GerenciadorUsuarioLocal;
+import com.leilaopecuario.persistencia.ControladorPersistenciaEnderecoLocal;
+import com.leilaopecuario.vo.EstadoVO;
+import com.leilaopecuario.vo.PaisVO;
+import com.leilaopecuario.vo.TelefoneVO;
+import com.leilaopecuario.vo.UsuarioVO;
+
+@ManagedBean
+@ViewScoped
+public class ControladorUsuarioBean {
+
+	private final static Logger LOGGER = Logger.getLogger(ControladorUsuarioBean.class);
+
+	@EJB
+	private GerenciadorUsuarioLocal gerenciadorUsuario;
+
+	@EJB
+	private ControladorPersistenciaEnderecoLocal controladorPersistenciaEndereco;
+
+	private UsuarioVO usuario = null;
+	private TelefoneVO telefone = null;
+	private PaisVO pais;
+
+
+	public String onFlowProcess(FlowEvent event) {
+		return event.getNewStep();
+	}
+
+	public UsuarioVO getUsuario() {
+		if (usuario == null) {
+			usuario = new UsuarioVO();
+		}
+		return usuario;
+	}
+
+	public void setUsuario(UsuarioVO usuario) {
+		this.usuario = usuario;
+	}
+
+	public String cadastraUsuario() {
+
+		String retorno = "";
+		try {
+
+			final String fraseErro = gerenciadorUsuario.gravaUsuario(usuario);
+			if (fraseErro == null) {
+				FacesContext.getCurrentInstance().addMessage("msg_cadastro",
+						new FacesMessage(FacesMessage.SEVERITY_INFO, ConstantesMensagens.INFO_USUARIO_CADASTRADO, ""));
+				retorno = "index";
+			} else {
+				FacesContext.getCurrentInstance().addMessage("msg_cadastro",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, fraseErro, null));
+			}
+		} catch (LeilaoException e) {
+			LOGGER.error("Ocorreu um erro no método cadastraUsuario", e);
+		}
+
+		return retorno;
+	}
+	
+	public String reinit() {
+		telefone = new TelefoneVO();
+
+		return null;
+	}
+
+	public List<EstadoVO> getListaEstados() {
+
+		final List<EstadoVO> listaEstadoVO = new ArrayList<EstadoVO>();
+		try {
+			final List<Estado> listaEstadosAux = controladorPersistenciaEndereco.recuperaListaEstados();
+			for (Estado estado : listaEstadosAux) {
+				final EstadoVO estadoVO = new EstadoVO();
+				BeanUtils.copyProperties(estadoVO, estado);
+				listaEstadoVO.add(estadoVO);
+			}
+		} catch (Exception e) {
+			LOGGER.error("Ocorreu um erro no método cadastraUsuario", e);
+		}
+		return listaEstadoVO;
+	}
+
+	public TelefoneVO getTelefone() {
+
+		if (telefone == null) {
+			telefone = new TelefoneVO();
+		}
+		return telefone;
+	}
+
+	public void setTelefone(TelefoneVO telefone) {
+		this.telefone = telefone;
+	}
+
+	public PaisVO getPais() {
+		return pais;
+	}
+
+	public void setPais(PaisVO pais) {
+		this.pais = pais;
+	}
+	
+}

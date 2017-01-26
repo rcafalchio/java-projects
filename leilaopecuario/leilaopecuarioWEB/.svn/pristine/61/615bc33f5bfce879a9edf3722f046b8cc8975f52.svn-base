@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:outputScript name="locale-primefaces.js" library="js" />
+
+<ui:composition template="/layout/layout.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form>
+			<p:growl id="cadastroUsuario" sticky="true" showDetail="true" />
+
+			<p:wizard widgetVar="wiz" nextLabel="Próximo" backLabel="Anterior"
+				flowListener="#{controleUsuarioBean.onFlowProcess}">
+
+				<!-- ################################### -->
+				<!-- 		Cadatro do Usuário 			 -->
+				<!-- ################################### -->
+				<p:tab id="usuario" title="Usuario">
+					<p:panel header="Dados do usuário">
+
+						<h:messages errorClass="error" />
+
+						<h:panelGrid columns="2" columnClasses="label, value"
+							styleClass="grid">
+
+							<h:outputText value="Nome:" for="nome" />
+							<p:inputText id="nome" required="true"
+								value="#{controleUsuarioBean.usuario.nome}" />
+
+							<h:outputText value="Login:" for="login" />
+							<p:inputText id="login" required="true"
+								value="#{controleUsuarioBean.usuario.login}" />
+
+							<h:outputText value="CPF:" for="cpf" />
+							<p:inputText id="cpf" required="true"
+								value="#{controleUsuarioBean.usuario.numeroCpf}" />
+
+							<h:outputText value="Data de Nascimento:" for="cpf" />
+							<p:calendar id="data_nascimento" locale="pt" pattern="dd/MM/yyyy"
+								value="#{controleUsuarioBean.usuario.dataNascimento}" />
+
+						</h:panelGrid>
+					</p:panel>
+				</p:tab>
+
+				<!-- ################################### -->
+				<!-- 		Contatos do Usuário 			 -->
+				<!-- ################################### -->
+				<p:tab id="contato" title="Contato">
+					<p:panel header="Contatos do usuário">
+
+						<h:messages errorClass="error" />
+
+						<h:panelGrid columns="2" columnClasses="label, value"
+							styleClass="grid">
+
+							<h:outputText value="Email:" for="email" />
+							<p:inputText id="email" required="true"
+								value="#{controleUsuarioBean.usuario.contato.email}" />
+
+							<h:outputText value="MSN:" for="msn" />
+							<p:inputText id="msn" required="true"
+								value="#{controleUsuarioBean.usuario.contato.msn}" />
+
+							<h:outputText value="Site:" for="site" />
+							<p:inputText id="site" required="true"
+								value="#{controleUsuarioBean.usuario.contato.site}" />
+
+							<h:outputText value="Skype:" for="skype" />
+							<p:inputText id="skype" required="true"
+								value="#{controleUsuarioBean.usuario.contato.skype}" />
+
+						</h:panelGrid>
+					</p:panel>
+				</p:tab>
+
+				<!-- ################################### -->
+				<!-- 		Cadatro da Empresa 			 -->
+				<!-- ################################### -->
+
+				<p:tab id="empresa" title="Empresa">
+					<p:panel header="Dados da empresa">
+
+						<h:messages errorClass="error" />
+
+						<h:panelGrid columns="2" columnClasses="label, value"
+							styleClass="grid">
+
+							<h:outputText value="Nome Fantasia:" for="nome_fantasia" />
+							<p:inputText id="nome_fantasia" required="false"
+								value="#{controleUsuarioBean.usuario.empresa.nomeFantasia}" />
+
+							<h:outputText value="Nome do titular:" for="nome_titular" />
+							<p:inputText id="nome_titular" required="false"
+								value="#{controleUsuarioBean.usuario.empresa.nomeTitular}" />
+
+							<h:outputText value="Nome do bairro:" for="bairro" />
+							<p:inputText id="bairro" required="false"
+								value="#{controleUsuarioBean.usuario.empresa.endereco.bairro}" />
+
+							<h:outputText value="Nome da cidade:" for="cidade" />
+							<p:inputText id="cidade" required="false"
+								value="#{controleUsuarioBean.usuario.empresa.endereco.cidade}" />
+
+							<h:outputText value="Logradouro:" for="logradouro" />
+							<p:inputText id="logradouro" required="false"
+								value="#{controleUsuarioBean.usuario.empresa.endereco.logradouro}" />
+
+						</h:panelGrid>
+
+					</p:panel>
+					<p:commandButton value="Cadastrar" update="cadastroUsuario"
+						actionListener="#{controleUsuarioBean.cadastraUsuario}" />
+				</p:tab>
+
+			</p:wizard>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

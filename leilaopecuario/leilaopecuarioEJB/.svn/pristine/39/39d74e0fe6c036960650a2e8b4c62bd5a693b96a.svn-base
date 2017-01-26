@@ -1,0 +1,65 @@
+package com.leilaopecuario.persistencia;
+
+import java.util.List;
+
+import javax.ejb.Local;
+
+import com.leilaopecuario.entidades.CaminhoFotos;
+import com.leilaopecuario.entidades.Leilao;
+import com.leilaopecuario.exception.PersistenciaException;
+import com.leilaopecuario.vo.LanceVO;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@Local
+public interface ControladorPersistenciaLeilaoLocal {
+
+	/**
+	 * Insere um leilão na base
+	 * 
+	 * @param leilaoVO
+	 * @return
+	 * @throws PersistenciaException
+	 */
+	public Integer inserirLeilao(LeilaoVO leilaoVO) throws PersistenciaException;
+
+	/**
+	 * Recupera todos os leiloes ativos
+	 * 
+	 * @return lista de leilões
+	 * @throws PersistenciaException
+	 */
+	public List<Leilao> buscarLeiloesAtivos() throws PersistenciaException;
+
+	/**
+	 * 
+	 * @param leilaoVO
+	 * @throws PersistenciaException
+	 */
+	public void atualizarLeilao(LeilaoVO leilaoVO) throws PersistenciaException;
+
+	/**
+	 * Recupera o lance atual daquele leilão
+	 * 
+	 * @param codigo
+	 * @return
+	 * @throws PersistenciaException
+	 */
+	public Double recuperaLanceAtual(Integer codigo) throws PersistenciaException;
+
+	/**
+	 * Efetua a persistencia do lance do usuário
+	 * 
+	 * @param lanceVO
+	 */
+	public void atualizarLance(LanceVO lanceVO) throws PersistenciaException;
+
+	/**
+	 * Recupera o caminho das fotos do leilão, e também qual a foto principal
+	 * 
+	 * @param codigo
+	 * @return
+	 * @throws PersistenciaException
+	 */
+	public CaminhoFotos obtemCaminhoFoto(Integer codigo) throws PersistenciaException;
+
+}

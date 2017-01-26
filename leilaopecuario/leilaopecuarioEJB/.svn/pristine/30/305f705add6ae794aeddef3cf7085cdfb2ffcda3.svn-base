@@ -1,0 +1,51 @@
+package com.leilaopecuario.vo;
+
+public class LeilaoVO {
+
+	private Integer codigo;
+	private String titulo;
+	private String descricao;
+	private Short formaPagamento;
+	private String caminhoFotos;
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Short getFormaPagamento() {
+		return formaPagamento;
+	}
+
+	public void setFormaPagamento(Short formaPagamento) {
+		this.formaPagamento = formaPagamento;
+	}
+
+	public String getCaminhoFotos() {
+		return caminhoFotos;
+	}
+
+	public void setCaminhoFotos(String caminhoFotos) {
+		this.caminhoFotos = caminhoFotos;
+	}
+
+}

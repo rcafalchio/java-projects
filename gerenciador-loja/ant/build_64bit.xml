@@ -1,0 +1,49 @@
+<project name="gerenciador-loja" default="default" basedir="../" xmlns:fx="javafx:com.sun.javafx.tools.ant">
+
+	<property name="caminho.jre" value="C:/Program Files/Java/jre7" />
+
+	<property name="caminho.javafx.ant" value="C:/Program Files/Java/jre7/lib/ant-javafx.jar" />
+
+	<property name="caminho.build" value="target/built/64bit" />
+
+	<target name="default">
+
+		<delete dir="${caminho.build}" />
+
+		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${caminho.javafx.ant}" />
+
+		<fx:application id="gerenciadorLojaApplication" name="Gerenciador" mainClass="br.com.tecway.fx.launcher.GerenciadorLojaLauncher" />
+
+		<fx:jar destfile="${caminho.build}/app/coparadorproposta.jar">
+
+			<fx:application refid="gerenciadorLojaApplication" />
+
+			<fx:fileset dir="target/classes" excludes="target/classes/parts/*" />
+
+			<fx:resources>
+				<fx:fileset type="jar" dir="target/dependency" includes="*.jar" excludes="jfxrt-2.2.jar" />
+			</fx:resources>
+
+		</fx:jar>
+
+		<mkdir dir="${caminho.build}/logs"/>
+
+		<copy todir="${caminho.build}/properties">
+			<fileset dir="src/main/resources/properties" includes="*.properties" />
+			<fileset dir="src/main/resources/properties" includes="*.xml" />
+		</copy>
+		
+		<copy todir="${caminho.build}/app">
+			<fileset dir="target/dependency" includes="*.jar" excludes="jfxrt-2.2.jar" />
+		</copy>
+
+		<copy todir="${caminho.build}/jre">
+			<fileset dir="${caminho.jre}" />
+		</copy>
+
+		<copy todir="${caminho.build}">
+			<fileset dir="${basedir}/ant" includes="*.bat" />
+		</copy>
+	</target>
+
+</project>

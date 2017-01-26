@@ -1,0 +1,28 @@
+package com.leilaopecuario.vo;
+
+public class TelefoneVO {
+
+	private Short tipoTelefone;
+	private Short ddd;
+	private Integer numeroTelefone;
+	
+	public Short getTipoTelefone() {
+		return tipoTelefone;
+	}
+	public void setTipoTelefone(Short tipoTelefone) {
+		this.tipoTelefone = tipoTelefone;
+	}
+	public Short getDdd() {
+		return ddd;
+	}
+	public void setDdd(Short ddd) {
+		this.ddd = ddd;
+	}
+	public Integer getNumeroTelefone() {
+		return numeroTelefone;
+	}
+	public void setNumeroTelefone(Integer numeroTelefone) {
+		this.numeroTelefone = numeroTelefone;
+	}
+	
+}

@@ -1,0 +1,38 @@
+package com.leilaopecuario.vo;
+
+import java.util.Date;
+
+public class LeilaoVO {
+
+	private Integer codigo;
+	private String titulo;
+	private String descricao;
+	private Long formaPagamento;
+	public Integer getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+	public String getTitulo() {
+		return titulo;
+	}
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	public Long getFormaPagamento() {
+		return formaPagamento;
+	}
+	public void setFormaPagamento(Long formaPagamento) {
+		this.formaPagamento = formaPagamento;
+	}
+	
+	
+
+}

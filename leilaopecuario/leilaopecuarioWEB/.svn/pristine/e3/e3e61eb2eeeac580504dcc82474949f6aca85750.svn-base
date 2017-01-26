@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/layout/layout.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:outputText value="#{controladorLeilaoBean.leilaoVO.titulo}"
+			styleClass="ui-widget-header" />
+
+		<p:fieldset legend="Fotos">
+			<div align="center">
+				<p:galleria value="#{controladorLeilaoBean.listaFotos}" var="image">
+					<p:graphicImage value="#{image}" />
+				</p:galleria>
+			</div>
+		</p:fieldset>
+
+		<h:form id="form_lance">
+
+			<p:messages errorClass="error" id="msg_cadastro" />
+
+			<p:fieldset legend="Lance">
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<h:outputText value="Lance atual: " />
+					<h:outputText id="lance_atual"
+						value="#{controladorLeilaoBean.leilaoVO.informacoesLances.lanceAtual}">
+						<f:convertNumber locale="pt_BR" maxFractionDigits="2"
+							minFractionDigits="2" />
+					</h:outputText>
+
+					<p:inputText id="lance" required="true"
+						requiredMessage="É necessário preencher o lance!"
+						value="#{controladorLeilaoBean.lanceVO.lance}" />
+
+					<p:commandButton value="Enviar Lance" update="msg_cadastro"
+						action="#{controladorLeilaoBean.enviarLance}" />
+
+				</h:panelGrid>
+			</p:fieldset>
+
+		</h:form>
+
+		<p:tabView effect="slide" effectDuration="normal">
+
+			<p:tab title="Dados do Leilão">
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<h:outputText value="Descricao: " />
+					<h:outputText id="descricao"
+						value="#{controladorLeilaoBean.leilaoVO.descricao}" />
+
+					<h:outputText value="Quantidade de lances efetuados: " />
+					<h:outputText id="quantidade_lances"
+						value="#{controladorLeilaoBean.leilaoVO.informacoesLances.quantidadeLancesEfetuados}" />
+
+				</h:panelGrid>
+			</p:tab>
+
+			<p:tab title="Dados do Animal">
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<h:outputText value="Idade: " />
+					<h:outputText id="idade_animal"
+						value="#{controladorLeilaoBean.leilaoVO.animalVO.idadeMeses} meses" />
+
+					<h:outputText value="Raça: " />
+					<h:outputText id="raca"
+						value="#{controladorLeilaoBean.leilaoVO.animalVO.raca}" />
+
+					<h:outputText value="Vacinas: " />
+					<h:outputText id="vacina"
+						value="#{controladorLeilaoBean.leilaoVO.animalVO.vacinas}" />
+
+					<h:outputText value="Local de criação: " />
+					<h:outputText id="local"
+						value="#{controladorLeilaoBean.leilaoVO.animalVO.localidadeCriacao}" />
+
+				</h:panelGrid>
+			</p:tab>
+
+		</p:tabView>
+
+	</ui:define>
+</ui:composition>
+</html>

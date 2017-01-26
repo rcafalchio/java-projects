@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#paginas#publicas#cadastrousuario.xhtml"
+  PATH="/paginas/publicas/cadastrousuario.xhtml" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#publicas#cadastrousuario.xhtml:0"
+   NAME="item" PATH="/paginas/publicas/cadastrousuario.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="cadastrado::#paginas#protegidas#index.xhtml"
+    NAME="output" PATH="/paginas/protegidas/index.xhtml"
+    TARGET="rules:#paginas#protegidas#index.xhtml" TITLE="cadastrado" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#*" PATH="/*" SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#*:0" NAME="item" PATH="/*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="login::#paginas#protegidas#index.xhtml"
+    NAME="output" PATH="/paginas/protegidas/index.xhtml"
+    TARGET="rules:#paginas#protegidas#index.xhtml" TITLE="login" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#protegidas#index.xhtml"
+  PATH="/paginas/protegidas/index.xhtml" SHAPE="240,145,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

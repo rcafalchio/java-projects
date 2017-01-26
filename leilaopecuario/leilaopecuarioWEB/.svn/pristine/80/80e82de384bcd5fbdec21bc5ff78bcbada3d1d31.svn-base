@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/layout/layout.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="form">
+
+			<p:dataTable id="leiloes" var="leilao"
+				value="#{controladorMeusLeiloesBean.meusLeiloes}"
+				rowKey="#{leilao.codigo}"
+				selection="#{controladorMeusLeiloesBean.leilaoVO}"
+				selectionMode="single">
+
+				<f:facet name="header">
+					<h:outputLabel value="Meus Leilões Cadastrados" />
+				</f:facet>
+				<p:column headerText="Leilao">
+					<h:outputLabel value="#{leilao.titulo}" />
+				</p:column>
+
+				<p:column headerText="Quantidade de lances">
+					<h:outputLabel
+						value="#{leilao.informacoesLances.quantidadeLancesEfetuados}" />
+				</p:column>
+
+				<p:column headerText="Lance Vencedor atualmente">
+					<h:outputLabel value="#{leilao.informacoesLances.lanceAtual}" />
+				</p:column>
+
+				<f:facet name="footer">
+					<p:commandButton id="ver" value="Ver" icon="ui-icon-search"
+						action="#{controladorLanceBean.efetuaLance(leilao)}" />
+				</f:facet>
+
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

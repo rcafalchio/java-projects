@@ -1,0 +1,28 @@
+package com.leilaopecuario.negocio;
+
+import java.util.List;
+
+import javax.ejb.Local;
+
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@Local
+public interface GerenciadorLeilaoLocal {
+
+	/**
+	 * Persiste o leilão
+	 * 
+	 * @param leilaoVO
+	 */
+	public void gravaLeilao(LeilaoVO leilaoVO);
+
+	/**
+	 * Recupera uma lista de leilões ativos
+	 * 
+	 * @return lista de leilões
+	 * @throws LeilaoException
+	 */
+	public List<LeilaoVO> recuperaLeiloesAtivos() throws LeilaoException;
+
+}

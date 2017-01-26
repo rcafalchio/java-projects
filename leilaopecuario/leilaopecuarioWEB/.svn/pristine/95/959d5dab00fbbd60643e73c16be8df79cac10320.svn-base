@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/layout/layout.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:galleria id="contentGalleria" value="#{pesquisarLeilaobean.players}"
+			var="player" frameWidth="64" frameHeight="87" panelWidth="300"
+			panelHeight="200" transitionInterval="0"
+			styleClass="ui-widget-content ui-corner-all">
+
+			<p:graphicImage id="playerImage"
+				value="/images/barca/#{player.photo}" />
+			<p:galleriaContent>
+				<h:panelGrid columns="2" cellpadding="5">
+					<f:facet name="header">
+						<p:graphicImage value="/images/barca/#{player.photo}" />
+					</f:facet>
+
+					<h:outputText value="Name: " />
+					<h:outputText id="name" value="#{player.name}" />
+
+					<h:outputText value="Number " />
+					<h:outputText id="number" value="#{player.number}" />
+
+					<h:outputText value="Position " />
+					<h:outputText id="position" value="#{player.position}" />
+				</h:panelGrid>
+			</p:galleriaContent>
+
+		</p:galleria>
+
+
+	</ui:define>
+</ui:composition>
+</html>

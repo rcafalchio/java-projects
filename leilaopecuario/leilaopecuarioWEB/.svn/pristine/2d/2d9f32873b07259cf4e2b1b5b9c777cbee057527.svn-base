@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/layout/layout2.xhtml">
+
+	<p:message id="msg_cadastro" />
+
+	<ui:define name="conteudo">
+
+		<h:form>
+			<div align="center">
+				<p:galleria id="contentGalleria"
+					value="#{controladorLeilaoBean.leiloes}" var="leilao"
+					frameWidth="64" frameHeight="87" panelWidth="1200"
+					panelHeight="450" transitionInterval="0"
+					styleClass="ui-widget-content ui-corner-all">
+					<p:graphicImage id="imagemLeilao"
+						value="/arquivos_leilao/fotos/#{leilao.codigo}/#{leilao.caminhosFotos.fotoPrincipal}" />
+
+					<p:galleriaContent>
+						<h:panelGrid columns="2" cellpadding="5" styleClass="centered">
+							<h:panelGrid columns="2" cellpadding="5" styleClass="centered">
+
+								<f:facet name="header">
+									<p:graphicImage
+										value="/arquivos_leilao/fotos/#{leilao.codigo}/#{leilao.caminhosFotos.fotoPrincipal}"
+										width="250px" height="210px" />
+								</f:facet>
+
+								<h:outputText value="Titulo: " />
+								<h:outputText id="titulo" value="#{leilao.titulo}" />
+
+								<h:outputText value="Lance atual: " />
+								<h:outputText id="lance_atual"
+									value="#{leilao.informacoesLances.lanceAtual}">
+									<f:convertNumber locale="pt_BR" maxFractionDigits="2"
+										minFractionDigits="2" />
+								</h:outputText>
+
+								<h:outputText value="Data final: " />
+								<h:outputText id="data_final" value="#{leilao.dataEHoraFinal}">
+									<f:convertDateTime locale="pt_BR" />
+								</h:outputText>
+
+								<f:facet name="footer">
+									<p:commandButton value="Efetuar Lance"
+										action="#{controladorLanceBean.efetuaLance(leilao)}"
+										icon="ui-icon-check" />
+
+								</f:facet>
+							</h:panelGrid>
+							<h:panelGrid columns="1" cellpadding="5" styleClass="centered">
+								<p:fieldset legend="Mais Informações">
+									<h:panelGrid columns="2" cellpadding="10">
+
+										<h:outputText value="Descricao: " />
+										<h:outputText id="descricao" value="#{leilao.descricao}" />
+
+										<h:outputText value="Quantidade de lances efetuados " />
+										<h:outputText id="quantidade_lances"
+											value="#{leilao.informacoesLances.quantidadeLancesEfetuados}" />
+
+									</h:panelGrid>
+								</p:fieldset>
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:galleriaContent>
+				</p:galleria>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,37 @@
+package com.leilaopecuario.vo;
+
+
+public class ContatoVO {
+	
+	private String email;
+	private Integer site;
+	private String msn;
+	private String skype;
+	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public Integer getSite() {
+		return site;
+	}
+	public void setSite(Integer site) {
+		this.site = site;
+	}
+	public String getMsn() {
+		return msn;
+	}
+	public void setMsn(String msn) {
+		this.msn = msn;
+	}
+	public String getSkype() {
+		return skype;
+	}
+	public void setSkype(String skype) {
+		this.skype = skype;
+	}
+
+
+}

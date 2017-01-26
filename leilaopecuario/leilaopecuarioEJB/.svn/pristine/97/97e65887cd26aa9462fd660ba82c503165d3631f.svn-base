@@ -1,0 +1,59 @@
+package com.leilaopecuario.negocio;
+
+import java.util.List;
+
+import javax.ejb.Local;
+
+import com.leilaopecuario.exception.LeilaoException;
+import com.leilaopecuario.exception.PersistenciaException;
+import com.leilaopecuario.vo.LanceVO;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@Local
+public interface GerenciadorLeilaoLocal {
+
+	/**
+	 * Persiste o leilão
+	 * 
+	 * @param leilaoVO
+	 * @throws PersistenciaException
+	 */
+	public Integer gravaLeilao(LeilaoVO leilaoVO) throws PersistenciaException;
+
+	/**
+	 * Recupera uma lista de leilões ativos
+	 * 
+	 * @return lista de leilões
+	 * @throws LeilaoException
+	 */
+	public List<LeilaoVO> recuperaLeiloesAtivos() throws LeilaoException;
+
+	/**
+	 * Recupera a lista dos caminhos das fotos do leilão
+	 * 
+	 * @param codigo
+	 * @return Lista de fotos
+	 * @throws LeilaoException 
+	 */
+	public List<String> recuperaFotosLeilao(Integer codigo) throws LeilaoException;
+	
+	/**
+	 * Atualiza o leilão
+	 * 
+	 * @param leilaoVO
+	 * @throws PersistenciaException
+	 * @throws LeilaoException
+	 */
+	public void atualizarLeilao(LeilaoVO leilaoVO) throws LeilaoException;
+
+	/**
+	 * Verifica se o lance enviado é válido e cadastra o lance na tabela
+	 * 
+	 * @param lanceVO
+	 * @return String - Frase de erro de negócio
+	 * @throws LeilaoException
+	 */
+	public String efetuarLance(LanceVO lanceVO) throws LeilaoException;
+	
+
+}

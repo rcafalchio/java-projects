@@ -1,0 +1,163 @@
+package com.leilaopecuario.persistencia;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.apache.log4j.Logger;
+
+import com.leilaopecuario.entidades.CaminhoFotos;
+import com.leilaopecuario.entidades.ChaveLance;
+import com.leilaopecuario.entidades.InformacoesLanceLeilao;
+import com.leilaopecuario.entidades.Lance;
+import com.leilaopecuario.entidades.Leilao;
+import com.leilaopecuario.exception.PersistenciaException;
+import com.leilaopecuario.vo.CaminhoFotoVO;
+import com.leilaopecuario.vo.LanceVO;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@Stateless
+public class ControladorPersistenciaLeilao implements ControladorPersistenciaLeilaoLocal {
+
+	private static Logger LOGGER = Logger.getLogger(ControladorPersistenciaLeilao.class);
+
+	@PersistenceContext(name = "leilao")
+	private EntityManager entityManager;
+
+	@Override
+	public Integer inserirLeilao(final LeilaoVO leilaoVO) throws PersistenciaException {
+		Integer codigoLeilao = null;
+		try {
+			final Leilao leilao = new Leilao();
+			leilao.setTitulo(leilaoVO.getTitulo());
+			leilao.setDescricao(leilaoVO.getDescricao());
+			entityManager.persist(leilao);
+			codigoLeilao = leilao.getCodigo();
+
+		} catch (Exception e) {
+			LOGGER.error("Erro no método inserirLeilao", e);
+			throw new PersistenciaException(e);
+		}
+
+		return codigoLeilao;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Leilao> buscarLeiloesAtivos() throws PersistenciaException {
+
+		List<Leilao> leiloes = null;
+
+		try {
+			final String queryString = "SELECT l FROM Leilao l ";
+			Query query = entityManager.createQuery(queryString);
+			leiloes = query.getResultList();
+		} catch (Exception e) {
+			LOGGER.error("Erro no método buscarLeiloesAtivos", e);
+			throw new PersistenciaException(e);
+		}
+
+		return leiloes;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CaminhoFotos> obtemCaminhoFotos(Integer codigo) throws PersistenciaException {
+
+		List<CaminhoFotos> caminhosFotos = null;
+
+		try {
+			final String queryString = "SELECT c FROM CaminhoFotos c " + "where c.leilao.codigo = :codigo";
+			Query query = entityManager.createQuery(queryString);
+			query.setParameter("codigo", codigo);
+			caminhosFotos = query.getResultList();
+		} catch (Exception e) {
+			LOGGER.error("Erro no método buscarLeiloesAtivos", e);
+			throw new PersistenciaException(e);
+		}
+
+		return caminhosFotos;
+	}
+
+	@Override
+	public void atualizarLeilao(LeilaoVO leilaoVO) throws PersistenciaException {
+
+		try {
+			Leilao leilao = entityManager.find(Leilao.class, leilaoVO.getCodigo());
+
+			for (CaminhoFotoVO caminho : leilaoVO.getCaminhosFotos()) {
+				CaminhoFotos caminhoFotos = new CaminhoFotos();
+				caminhoFotos.setCaminho(caminho.getCaminho());
+				caminhoFotos.setFotoPrincipal(caminho.isFotoPrincipal());
+				caminhoFotos.setLeilao(leilao);
+				leilao.getCaminhoFotos().add(caminhoFotos);
+			}
+
+			entityManager.merge(leilao);
+
+		} catch (Exception e) {
+			LOGGER.error("Erro no método inserirLeilao", e);
+			throw new PersistenciaException(e);
+		}
+
+	}
+
+	@Override
+	public Double recuperaLanceAtual(Integer codigo) throws PersistenciaException {
+
+		Double retorno = null;
+
+		try {
+			final String queryString = "SELECT i.lanceAtual FROM InformacoesLanceLeilao i "
+					+ "where i.codigoLeilao = :codigo";
+			Query query = entityManager.createQuery(queryString);
+			query.setParameter("codigo", codigo);
+			retorno = (Double) query.getSingleResult();
+		} catch (NoResultException e) {
+			retorno = null;
+		} catch (Exception e) {
+			LOGGER.error("Erro no método buscarLeiloesAtivos", e);
+			throw new PersistenciaException(e);
+		}
+		return retorno;
+
+	}
+
+	@Override
+	public void atualizarLance(LanceVO lanceVO) throws PersistenciaException {
+
+		try {
+			final String queryString = "SELECT i FROM InformacoesLanceLeilao i " + "where i.codigoLeilao = :codigo";
+			final Query query = entityManager.createQuery(queryString);
+			query.setParameter("codigo", lanceVO.getLeilaoVO().getCodigo());
+			final InformacoesLanceLeilao informacoesLanceLeilao = (InformacoesLanceLeilao) query.getSingleResult();
+			// Atualiza o lance vencedor até o momento
+			informacoesLanceLeilao.setLanceAtual(lanceVO.getLance());
+			// Soma um nos lances efetuados
+			informacoesLanceLeilao.setQuantidadeLancesEfetuados(informacoesLanceLeilao.getQuantidadeLancesEfetuados()
+					.intValue() + 1);
+
+			// Registra o lance do usuário para aquele leilão
+			ChaveLance chaveLance = new ChaveLance();
+			chaveLance.setCodigoLeilao(lanceVO.getLeilaoVO().getCodigo());
+			chaveLance.setCodigoUsuario(lanceVO.getUsuarioVO().getCodigo());
+			Lance lance = entityManager.find(Lance.class, chaveLance);
+			if (lance == null) {
+				lance = new Lance();
+			}
+			lance.setChaveLance(chaveLance);
+			lance.setLance(lanceVO.getLance());
+			lance.setDataLance(new Date());
+			entityManager.merge(lance);
+		} catch (Exception e) {
+			LOGGER.error("Erro no método atualizarLance", e);
+			throw new PersistenciaException(e);
+		}
+
+	}
+}

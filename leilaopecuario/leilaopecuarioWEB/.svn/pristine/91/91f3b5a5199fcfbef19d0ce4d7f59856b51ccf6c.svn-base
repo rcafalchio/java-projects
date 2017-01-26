@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>Leilão Pecuário Web</title>
+	<link type="text/css" rel="stylesheet" href="../css/primefaces-humanity" />
+	<link rel="shortcut icon" href="../images/logo.png" type="image/png" />
+</h:head>
+<h:body>
+	<f:event type="javax.faces.event.PreRenderViewEvent"
+		listener="#{applicationScopeBean.preRenderView}" />
+	<table style="width: 100%">
+		<tr>
+			<td colspan="3"><ui:insert name="cabecalho">
+					<ui:include src="../layout/header3.xhtml" />
+				</ui:insert></td>
+		</tr>
+		<tr>
+			<td width="20%"></td>
+			<td width="60%"><ui:insert name="menu">
+					<ui:include src="../layout/menu.xhtml" />
+				</ui:insert></td>
+			<td width="20%"></td>
+		</tr>
+		<tr>
+			<td width="20%"></td>
+			<td width="60%"><ui:insert name="conteudo">
+				</ui:insert></td>
+			<td width="20%"></td>
+		</tr>
+		<tr>
+			<td colspan="3"><ui:insert name="cabecalho">
+					<ui:include src="../layout/footer.xhtml" />
+				</ui:insert></td>
+		</tr>
+	</table>
+</h:body>
+</html>

@@ -1,0 +1,64 @@
+package com.leilaopecuario.entidades;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+@Entity
+@Table(name = "caminho_fotos_leilao")
+public class CaminhoFotos {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "foreign")
+	@GenericGenerator(name = "foreign", strategy = "foreign", parameters = { @Parameter(name = "property", value = "leilao") })
+	@Column(name = "codigo_leilao")
+	private Integer codigoLeilao;
+
+	private String caminho;
+
+	@Column(name = "foto_principal")
+	private boolean fotoPrincipal;
+
+	@ManyToOne
+	private Leilao leilao;
+
+	public Integer getCodigoLeilao() {
+		return codigoLeilao;
+	}
+
+	public void setCodigoLeilao(Integer codigoLeilao) {
+		this.codigoLeilao = codigoLeilao;
+	}
+
+	public String getCaminho() {
+		return caminho;
+	}
+
+	public void setCaminho(String caminho) {
+		this.caminho = caminho;
+	}
+
+	public boolean isFotoPrincipal() {
+		return fotoPrincipal;
+	}
+
+	public void setFotoPrincipal(boolean fotoPrincipal) {
+		this.fotoPrincipal = fotoPrincipal;
+	}
+
+	public Leilao getLeilao() {
+		return leilao;
+	}
+
+	public void setLeilao(Leilao leilao) {
+		this.leilao = leilao;
+	}
+
+}

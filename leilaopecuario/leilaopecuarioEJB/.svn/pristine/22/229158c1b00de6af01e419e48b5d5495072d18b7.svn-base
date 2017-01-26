@@ -1,0 +1,27 @@
+package com.leilaopecuario.util;
+
+
+public class Teste {
+
+	public static void main(String[] args) throws Exception {
+
+//		byte[] b = CriptoUtil.digest("senha".getBytes(), "md5");
+//
+//		String senhaCriptografada = CriptoUtil.byteArrayToHexString(b);
+//
+//		System.out.println("Criptografada " + senhaCriptografada);
+//		
+//		byte[] b2 = CriptoUtil.digest("senha".getBytes(), "md5");
+//
+//		String senhaCriptografada2 = CriptoUtil.byteArrayToHexString(b2);
+//
+//		System.out.println("Criptografada " + senhaCriptografada2);
+		
+		String foto = "F:/arquivos_leilao/fotos/1/aqui1.jpg";
+		foto = foto.replaceAll("/", "\\\\\\\\");
+		System.out.println(foto);
+	
+		
+	}
+
+}

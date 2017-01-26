@@ -1,0 +1,23 @@
+package com.leilaopecuario.util;
+
+import java.security.NoSuchAlgorithmException;
+
+public class Teste {
+
+	public static void main(String[] args) throws NoSuchAlgorithmException {
+
+		byte[] b = CriptoUtil.digest("senha".getBytes(), "md5");
+
+		String senhaCriptografada = CriptoUtil.byteArrayToHexString(b);
+
+		System.out.println("Criptografada " + senhaCriptografada);
+		
+		byte[] b2 = CriptoUtil.digest("senha".getBytes(), "md5");
+
+		String senhaCriptografada2 = CriptoUtil.byteArrayToHexString(b2);
+
+		System.out.println("Criptografada " + senhaCriptografada2);
+		
+	}
+
+}

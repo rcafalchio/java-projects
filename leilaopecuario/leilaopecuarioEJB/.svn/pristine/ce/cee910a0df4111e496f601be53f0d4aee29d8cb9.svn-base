@@ -1,0 +1,58 @@
+package com.leilaopecuario.entidades;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "caminho_fotos_leilao")
+public class CaminhoFotos {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer codigo;
+	private String caminho;
+
+	@Column(name = "foto_principal")
+	private boolean fotoPrincipal;
+
+	@ManyToOne
+	private Leilao leilao;
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getCaminho() {
+		return caminho;
+	}
+
+	public void setCaminho(String caminho) {
+		this.caminho = caminho;
+	}
+
+	public boolean isFotoPrincipal() {
+		return fotoPrincipal;
+	}
+
+	public void setFotoPrincipal(boolean fotoPrincipal) {
+		this.fotoPrincipal = fotoPrincipal;
+	}
+
+	public Leilao getLeilao() {
+		return leilao;
+	}
+
+	public void setLeilao(Leilao leilao) {
+		this.leilao = leilao;
+	}
+
+}

@@ -1,0 +1,14 @@
+package com.leilaopecuario.constantes;
+
+public interface ConstantesMensagens {
+
+	// INFORMATIVO
+	public static final String INFO_USUARIO_CADASTRADO = "Cadastro Efetuado com sucesso.";
+	public static final String INFO_LANCE_SUCESSO = "Lance efetuado com sucesso.";
+	// ERRO DE NEGÓCIO
+	public static final String ERRO_LOGIN = "Esse login já existe, favor modificar.";
+	public static final String ERRO_NECESSITA_LOGIN = "É necessário efetuar o login antes dessa operação.";
+	public static final String ERRO_LANCE = "O Lance efetuado deve ser maior que o atual";
+	// ERRO SISTEMA
+	public static final String FALHA_GENERICA = "Ocorreu um erro de sistema, contate o administrador";
+}

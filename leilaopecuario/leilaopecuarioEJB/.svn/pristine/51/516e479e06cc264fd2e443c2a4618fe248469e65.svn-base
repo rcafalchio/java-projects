@@ -1,0 +1,21 @@
+package com.leilaopecuario.entidades;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+import com.leilaopecuario.persistencia.ControladorPersistenciaUsuarioLocal;
+
+public class TestePersistencia {
+
+	/**
+	 * @param args
+	 * @throws NamingException
+	 */
+	public static void main(String[] args) throws NamingException {
+
+		InitialContext initialContext = new InitialContext();
+		ControladorPersistenciaUsuarioLocal controladorPersistenciaUsuario = (ControladorPersistenciaUsuarioLocal) initialContext
+				.lookup("leilaopecuarioEJB/ControladorPersistenciaUsuario/Remote");
+	}
+
+}

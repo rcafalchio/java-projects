@@ -1,0 +1,57 @@
+package com.leilaopecuario.persistencia;
+
+import java.util.List;
+
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.apache.log4j.Logger;
+
+import com.leilaopecuario.entidades.Leilao;
+import com.leilaopecuario.exception.PersistenciaException;
+import com.leilaopecuario.vo.LeilaoVO;
+
+@Stateless
+public class ControladorPersistenciaLeilao implements
+		ControladorPersistenciaLeilaoLocal {
+
+	private static Logger LOGGER = Logger
+			.getLogger(ControladorPersistenciaLeilao.class);
+
+	@PersistenceContext(name = "leilao")
+	private EntityManager entityManager;
+
+	@Override
+	public void inserirLeilao(final LeilaoVO leilaoVO) throws PersistenciaException {
+		try {
+			final Leilao leilao = new Leilao();
+			leilao.setTitulo(leilaoVO.getTitulo());
+			leilao.setDescricao(leilaoVO.getDescricao());
+			entityManager.persist(leilao);
+		} catch (Exception e) {
+			LOGGER.error("Erro no método inserirLeilao", e);
+			throw new PersistenciaException(e);
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Leilao> buscarLeiloesAtivos() throws PersistenciaException {
+
+		List<Leilao> leiloes = null;
+
+		try {
+			final String queryString = "SELECT l FROM Leilao l ";
+			Query query = entityManager.createQuery(queryString);
+			leiloes = query.getResultList();
+		} catch (Exception e) {
+			LOGGER.error("Erro no método buscarLeiloesAtivos", e);
+			throw new PersistenciaException(e);
+		}
+
+		return leiloes;
+	}
+
+}
